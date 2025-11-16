@@ -92,7 +92,7 @@ class AboutSection extends StatelessWidget {
                           _buildInfoCard(
                             '🚀',
                             'Projects',
-                            '6+ Completed',
+                            '7+ Completed',
                             isDark,
                           ),
                         ],

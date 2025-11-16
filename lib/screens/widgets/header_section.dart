@@ -347,7 +347,7 @@ class HeaderSection extends StatelessWidget {
                 const SizedBox(width: 30),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
                 const SizedBox(width: 30),
-                _buildStatItem('6+', 'Projects Done', isDark),
+                _buildStatItem('7+', 'Projects Done', isDark),
                 const SizedBox(width: 30),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
                 const SizedBox(width: 30),
@@ -387,7 +387,7 @@ class HeaderSection extends StatelessWidget {
               children: [
                 _buildStatItemMobile('3+', 'Years', isDark),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                _buildStatItemMobile('20+', 'Projects', isDark),
+                _buildStatItemMobile('7+', 'Projects', isDark),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
                 _buildStatItemMobile('15+', 'Skills', isDark),
               ],
@@ -425,7 +425,7 @@ class HeaderSection extends StatelessWidget {
               children: [
                 _buildStatItemTablet('3+', 'Years Experience', isDark),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                _buildStatItemTablet('20+', 'Projects Done', isDark),
+                _buildStatItemTablet('7+', 'Projects Done', isDark),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
                 _buildStatItemTablet('15+', 'Skills', isDark),
               ],
