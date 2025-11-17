@@ -385,7 +385,7 @@ class HeaderSection extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildStatItemMobile('3+', 'Years', isDark),
+                _buildStatItemMobile('1+', 'Years', isDark),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
                 _buildStatItemMobile('7+', 'Projects', isDark),
                 Container(width: 1, color: Colors.white.withOpacity(0.3)),
