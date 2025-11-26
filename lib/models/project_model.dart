@@ -41,7 +41,7 @@ class Project {
         technologies: ['Flutter', 'SQLite', 'Offline-First', 'Local Database'],
         imagePath: 'assets/img/mockap stoks sqlite.png',
         videoLink:
-            'https://drive.google.com/file/d/1oKNF4huSwUoDrVTE41WdRao8dmM_puZ6/view?usp=drivesdk',
+            'https://drive.google.com/file/d/13R36k2unKcR6YIgrvHGA2D7IJk58XZcp/view?usp=drivesdk',
         badge: 'Offline',
       ),
       Project(
@@ -56,7 +56,7 @@ class Project {
         ],
         imagePath: 'assets/img/mockup stock db.png',
         videoLink:
-            'https://drive.google.com/file/d/1oKNF4huSwUoDrVTE41WdRao8dmM_puZ6/view?usp=drivesdk',
+            '',
         badge: 'Cloud',
       ),
       Project(

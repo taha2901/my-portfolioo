@@ -328,6 +328,8 @@ class ProjectsSection extends StatelessWidget {
                                 Icons.code_rounded,
                                 project.githubLink!,
                                 isDark,
+                                project.title,
+                            context,
                               ),
                             ),
                           if (project.githubLink != null &&
@@ -340,6 +342,8 @@ class ProjectsSection extends StatelessWidget {
                                 Icons.android_rounded,
                                 project.apkLink!,
                                 isDark,
+                                project.title,
+                            context,
                               ),
                             ),
                         ],
@@ -353,6 +357,8 @@ class ProjectsSection extends StatelessWidget {
                             Icons.play_circle_rounded,
                             project.videoLink!,
                             isDark,
+                            project.title,
+                            context,
                           ),
                         ),
                       ],
@@ -415,70 +421,83 @@ IconData _getBadgeIcon(String badge) {
 
 
   Widget _buildActionButton(
-    String label,
-    IconData icon,
-    String url,
-    bool isDark,
-  ) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                    .withOpacity(0.9),
-                (isDark ? AppTheme.darkAccent : AppTheme.lightAccent)
-                    .withOpacity(0.8),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                    .withOpacity(0.4),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
-              ),
+  String label,
+  IconData icon,
+  String url,
+  bool isDark,
+  String projectTitle,
+  BuildContext context,
+) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(12),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
+                  .withOpacity(0.9),
+              (isDark ? AppTheme.darkAccent : AppTheme.lightAccent)
+                  .withOpacity(0.8),
             ],
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => _launchURL(url),
-              borderRadius: BorderRadius.circular(12),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(icon, color: Colors.white, size: 20),
-                    const SizedBox(width: 8),
-                    Text(
-                      label,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
-                      ),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
+                  .withOpacity(0.4),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => _launchURL(url, projectTitle, context),
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, color: Colors.white, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ),
+    ),
+  );
+}
+
+  Future<void> _launchURL(String url, String projectTitle, BuildContext context) async {
+  if (projectTitle == 'Management Stocks (Cloud)') {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('🎬 سيتم إضافة الفيديو قريبًا!'),
+        duration: Duration(seconds: 2),
+      ),
     );
+    return; // ما تفتحش اللينك
   }
 
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
-    }
+  final Uri uri = Uri.parse(url);
+  if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    throw Exception('Could not launch $url');
   }
+}
+
 }
