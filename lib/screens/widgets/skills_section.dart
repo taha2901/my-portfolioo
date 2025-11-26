@@ -11,41 +11,69 @@ class SkillsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final skills = Skill.getSkills();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
         color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: Responsive.isMobile(context) ? 20 : Responsive.isTablet(context) ? 40 : 100,
+        horizontal: Responsive.isMobile(context)
+            ? 20
+            : Responsive.isTablet(context)
+                ? 40
+                : 100,
         vertical: Responsive.isMobile(context) ? 80 : 120,
       ),
       child: Column(
         children: [
           _buildSectionTitle('Skills & Technologies', isDark),
           const SizedBox(height: 60),
+
+          /// -------- GRID (3 per row on mobile) --------
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1200),
-            child: Wrap(
-              spacing: 20,
-              runSpacing: 20,
-              alignment: WrapAlignment.center,
-              children: skills.asMap().entries.map((entry) {
-                return TweenAnimationBuilder(
-                  duration: Duration(milliseconds: 500 + (entry.key * 50)),
-                  tween: Tween<double>(begin: 0, end: 1),
-                  builder: (context, double value, child) {
-                    return Transform.scale(
-                      scale: value,
-                      child: Opacity(
-                        opacity: value,
-                        child: _buildSkillCard(entry.value, context, isDark),
-                      ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                int crossAxisCount = 3;
+
+                if (constraints.maxWidth > 900) {
+                  crossAxisCount = 5;
+                } else if (constraints.maxWidth > 600) {
+                  crossAxisCount = 4;
+                }
+
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: skills.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    childAspectRatio: 1,
+                  ),
+                  itemBuilder: (context, index) {
+                    return TweenAnimationBuilder(
+                      duration: Duration(milliseconds: 500 + (index * 50)),
+                      tween: Tween<double>(begin: 0, end: 1),
+                      builder: (context, double value, child) {
+                        return Transform.scale(
+                          scale: value,
+                          child: Opacity(
+                            opacity: value,
+                            child: _buildSkillCard(
+                              skills[index],
+                              context,
+                              isDark,
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                 );
-              }).toList(),
+              },
             ),
           ),
         ],
@@ -93,7 +121,7 @@ class SkillsSection extends StatelessWidget {
 
   Widget _buildSkillCard(Skill skill, BuildContext context, bool isDark) {
     final isMobile = Responsive.isMobile(context);
-    
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: ClipRRect(
@@ -101,25 +129,24 @@ class SkillsSection extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            width: isMobile ? 160 : 190,
-            height: isMobile ? 160 : 190,
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               gradient: isDark
                   ? LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
                       colors: [
                         AppTheme.darkCard.withOpacity(0.8),
                         AppTheme.darkCard.withOpacity(0.6),
                       ],
-                    )
-                  : LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
+                    )
+                  : LinearGradient(
                       colors: [
                         Colors.white.withOpacity(0.9),
                         Colors.white.withOpacity(0.7),
                       ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
@@ -141,32 +168,15 @@ class SkillsSection extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                            .withOpacity(0.2),
-                        (isDark ? AppTheme.darkAccent : AppTheme.lightAccent)
-                            .withOpacity(0.1),
-                      ],
-                    ),
-                  ),
-                  child: Text(
-                    skill.emoji,
-                    style: TextStyle(fontSize: isMobile ? 45 : 55),
-                  ),
-                ),
-                const SizedBox(height: 15),
+                Text(skill.emoji,
+                    style: TextStyle(fontSize: isMobile ? 40 : 50)),
+                const SizedBox(height: 12),
                 Text(
                   skill.name,
                   style: TextStyle(
-                    fontSize: isMobile ? 15 : 17,
+                    fontSize: isMobile ? 14 : 16,
                     fontWeight: FontWeight.w700,
                     color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                    letterSpacing: 0.5,
                   ),
                   textAlign: TextAlign.center,
                 ),
