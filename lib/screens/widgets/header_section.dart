@@ -8,7 +8,13 @@ import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+  final VoidCallback onGetInTouch;
+  final VoidCallback onViewProjects;
+  const HeaderSection({
+    super.key,
+    required this.onGetInTouch,
+    required this.onViewProjects,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -306,12 +312,7 @@ class HeaderSection extends StatelessWidget {
               true,
               isDark,
               isMobile,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ContactSection()),
-                );
-              },
+               onTap: onGetInTouch, // استخدم الـ callback اللي انت مررته
             ),
             _buildGlassButton(
               'View Projects',
@@ -319,12 +320,8 @@ class HeaderSection extends StatelessWidget {
               false,
               isDark,
               isMobile,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ProjectsSection()),
-                );
-              },
+                onTap: onViewProjects, // استخدم الـ callback اللي انت مررته
+
             ),
           ],
         ),

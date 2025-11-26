@@ -26,6 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _showBackToTop = false;
 
+  // GlobalKeys لكل Section
+  final GlobalKey _aboutKey = GlobalKey();
+  final GlobalKey _skillsKey = GlobalKey();
+  final GlobalKey _projectsKey = GlobalKey();
+  final GlobalKey _cvKey = GlobalKey();
+  final GlobalKey _contactKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +51,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  void scrollToSection(GlobalKey key) {
+    final context = key.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,19 +69,21 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           SingleChildScrollView(
             controller: _scrollController,
-            child: const Column(
+            child: Column(
               children: [
-                HeaderSection(),
-                AboutSection(),
-                SkillsSection(),
-                ProjectsSection(),
-                CVSection(),
-                ContactSection(),
+                HeaderSection(
+                  onGetInTouch: () => scrollToSection(_contactKey),
+                  onViewProjects: () => scrollToSection(_projectsKey),
+                ),
+                AboutSection(key: _aboutKey),
+                SkillsSection(key: _skillsKey),
+                ProjectsSection(key: _projectsKey),
+                CVSection(key: _cvKey),
+                ContactSection(key: _contactKey),
                 FooterSection(),
               ],
             ),
           ),
-          // Theme Toggle Button
           Positioned(
             top: 20,
             right: 20,
@@ -72,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onToggle: widget.onThemeToggle,
             ),
           ),
-          // Back to Top Button
           if (_showBackToTop)
             Positioned(
               bottom: 30,
