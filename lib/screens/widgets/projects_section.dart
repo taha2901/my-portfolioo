@@ -329,7 +329,7 @@ class ProjectsSection extends StatelessWidget {
                                 project.githubLink!,
                                 isDark,
                                 project.title,
-                            context,
+                                context,
                               ),
                             ),
                           if (project.githubLink != null &&
@@ -343,7 +343,7 @@ class ProjectsSection extends StatelessWidget {
                                 project.apkLink!,
                                 isDark,
                                 project.title,
-                            context,
+                                context,
                               ),
                             ),
                         ],
@@ -372,132 +372,135 @@ class ProjectsSection extends StatelessWidget {
       ),
     );
   }
+
   LinearGradient _getBadgeGradient(String badge) {
-  switch (badge.toLowerCase()) {
-    case 'featured':
-      return const LinearGradient(
-        colors: [Color(0xFFFF6B6B), Color(0xFFEE5A6F)],
-      );
-    case 'offline':
-      return const LinearGradient(
-        colors: [Color(0xFF4A90E2), Color(0xFF357ABD)],
-      );
-    case 'cloud':
-      return const LinearGradient(
-        colors: [Color(0xFF00C851), Color(0xFF007E33)],
-      );
-    default:
-      return const LinearGradient(
-        colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
-      );
+    switch (badge.toLowerCase()) {
+      case 'featured':
+        return const LinearGradient(
+          colors: [Color(0xFFFF6B6B), Color(0xFFEE5A6F)],
+        );
+      case 'offline':
+        return const LinearGradient(
+          colors: [Color(0xFF4A90E2), Color(0xFF357ABD)],
+        );
+      case 'cloud':
+        return const LinearGradient(
+          colors: [Color(0xFF00C851), Color(0xFF007E33)],
+        );
+      default:
+        return const LinearGradient(
+          colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+        );
+    }
   }
-}
 
-Color _getBadgeColor(String badge) {
-  switch (badge.toLowerCase()) {
-    case 'featured':
-      return const Color(0xFFFF6B6B);
-    case 'offline':
-      return const Color(0xFF4A90E2);
-    case 'cloud':
-      return const Color(0xFF00C851);
-    default:
-      return const Color(0xFF667EEA);
+  Color _getBadgeColor(String badge) {
+    switch (badge.toLowerCase()) {
+      case 'featured':
+        return const Color(0xFFFF6B6B);
+      case 'offline':
+        return const Color(0xFF4A90E2);
+      case 'cloud':
+        return const Color(0xFF00C851);
+      default:
+        return const Color(0xFF667EEA);
+    }
   }
-}
 
-IconData _getBadgeIcon(String badge) {
-  switch (badge.toLowerCase()) {
-    case 'featured':
-      return Icons.star_rounded;
-    case 'offline':
-      return Icons.storage_rounded;
-    case 'cloud':
-      return Icons.cloud_rounded;
-    default:
-      return Icons.label_rounded;
+  IconData _getBadgeIcon(String badge) {
+    switch (badge.toLowerCase()) {
+      case 'featured':
+        return Icons.star_rounded;
+      case 'offline':
+        return Icons.storage_rounded;
+      case 'cloud':
+        return Icons.cloud_rounded;
+      default:
+        return Icons.label_rounded;
+    }
   }
-}
-
 
   Widget _buildActionButton(
-  String label,
-  IconData icon,
-  String url,
-  bool isDark,
-  String projectTitle,
-  BuildContext context,
-) {
-  return ClipRRect(
-    borderRadius: BorderRadius.circular(12),
-    child: BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                  .withOpacity(0.9),
-              (isDark ? AppTheme.darkAccent : AppTheme.lightAccent)
-                  .withOpacity(0.8),
+    String label,
+    IconData icon,
+    String url,
+    bool isDark,
+    String projectTitle,
+    BuildContext context,
+  ) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
+                    .withOpacity(0.9),
+                (isDark ? AppTheme.darkAccent : AppTheme.lightAccent)
+                    .withOpacity(0.8),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
+                    .withOpacity(0.4),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
             ],
           ),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                  .withOpacity(0.4),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () => _launchURL(url, projectTitle, context),
-            borderRadius: BorderRadius.circular(12),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon, color: Colors.white, size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _launchURL(url, projectTitle, context),
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon, color: Colors.white, size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      label,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
-
-  Future<void> _launchURL(String url, String projectTitle, BuildContext context) async {
-  if (projectTitle == 'Management Stocks (Cloud)') {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('🎬 سيتم إضافة الفيديو قريبًا!'),
-        duration: Duration(seconds: 2),
-      ),
     );
-    return; // ما تفتحش اللينك
   }
 
-  final Uri uri = Uri.parse(url);
-  if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-    throw Exception('Could not launch $url');
-  }
-}
+  Future<void> _launchURL(
+    String url,
+    String projectTitle,
+    BuildContext context,
+  ) async {
+    if (projectTitle == 'Management Stocks (Cloud)') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('🎬 سيتم إضافة الفيديو قريبًا!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return; // ما تفتحش اللينك
+    }
 
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 }

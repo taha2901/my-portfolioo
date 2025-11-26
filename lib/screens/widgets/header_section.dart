@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:taha_portfolio/screens/widgets/contact_section.dart';
+import 'package:taha_portfolio/screens/widgets/projects_section.dart';
 import 'dart:ui';
 import '../../core/utils/responsive.dart';
 import '../../core/constants/app_constants.dart';
@@ -304,6 +306,12 @@ class HeaderSection extends StatelessWidget {
               true,
               isDark,
               isMobile,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ContactSection()),
+                );
+              },
             ),
             _buildGlassButton(
               'View Projects',
@@ -311,6 +319,12 @@ class HeaderSection extends StatelessWidget {
               false,
               isDark,
               isMobile,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProjectsSection()),
+                );
+              },
             ),
           ],
         ),
@@ -515,7 +529,14 @@ class HeaderSection extends StatelessWidget {
   }
 
   Widget _buildSkillsList(bool isDark) {
-    final topSkills = ['Flutter', 'Dart', 'Firebase','Supabase', 'SQLite', 'REST APIs'];
+    final topSkills = [
+      'Flutter',
+      'Dart',
+      'Firebase',
+      'Supabase',
+      'SQLite',
+      'REST APIs',
+    ];
 
     return Wrap(
       spacing: 10,
@@ -553,7 +574,14 @@ class HeaderSection extends StatelessWidget {
   }
 
   Widget _buildSkillsListMobile(bool isDark) {
-    final topSkills = ['Flutter', 'Dart', 'Firebase','Supabase', 'SQLite', 'REST APIs'];
+    final topSkills = [
+      'Flutter',
+      'Dart',
+      'Firebase',
+      'Supabase',
+      'SQLite',
+      'REST APIs',
+    ];
 
     return Wrap(
       spacing: 8,
@@ -591,7 +619,14 @@ class HeaderSection extends StatelessWidget {
   }
 
   Widget _buildSkillsListTablet(bool isDark) {
-    final topSkills = ['Flutter', 'Dart', 'Firebase','Supabase', 'SQLite', 'REST APIs'];
+    final topSkills = [
+      'Flutter',
+      'Dart',
+      'Firebase',
+      'Supabase',
+      'SQLite',
+      'REST APIs',
+    ];
 
     return Wrap(
       spacing: 10,
@@ -654,45 +689,52 @@ class HeaderSection extends StatelessWidget {
     IconData icon,
     bool isPrimary,
     bool isDark,
-    bool isMobile,
-  ) {
+    bool isMobile, {
+    VoidCallback? onTap,
+  }) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(30),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 20 : 25,
-            vertical: isMobile ? 11 : 13,
-          ),
-          decoration: BoxDecoration(
-            gradient: isPrimary
-                ? LinearGradient(
-                    colors: [
-                      Colors.white.withOpacity(0.3),
-                      Colors.white.withOpacity(0.2),
-                    ],
-                  )
-                : null,
-            color: isPrimary ? null : Colors.white.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: Colors.white, size: isMobile ? 18 : 20),
-              SizedBox(width: isMobile ? 8 : 10),
-              Text(
-                text,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: isMobile ? 13 : 15,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5,
-                ),
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 20 : 25,
+              vertical: isMobile ? 11 : 13,
+            ),
+            decoration: BoxDecoration(
+              gradient: isPrimary
+                  ? LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.3),
+                        Colors.white.withOpacity(0.2),
+                      ],
+                    )
+                  : null,
+              color: isPrimary ? null : Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 2,
               ),
-            ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, color: Colors.white, size: isMobile ? 18 : 20),
+                SizedBox(width: isMobile ? 8 : 10),
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: isMobile ? 13 : 15,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
