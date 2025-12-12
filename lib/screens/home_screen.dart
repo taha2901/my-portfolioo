@@ -80,7 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ProjectsSection(key: _projectsKey),
                 CVSection(key: _cvKey),
                 ContactSection(key: _contactKey),
-                FooterSection(),
+                if (MediaQuery.of(context).size.width > 800)
+                  const FooterSection(),
+                const SizedBox(height: 100),
+                
               ],
             ),
           ),

@@ -1,211 +1,111 @@
-import 'package:flutter/material.dart';
-import 'package:taha_portfolio/screens/widgets/all_projects_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/responsive.dart';
 import '../../models/project_model.dart';
 
-class ProjectsSection extends StatelessWidget {
-  const ProjectsSection({super.key});
+class AllProjectsScreen extends StatelessWidget {
+  const AllProjectsScreen({super.key});
 
   @override
-  @override
-Widget build(BuildContext context) {
-  final projects = Project.getProjects();
-  final isDark = Theme.of(context).brightness == Brightness.dark;
+  Widget build(BuildContext context) {
+    final projects = Project.getProjects();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-  // أول 4 بس
-  final displayedProjects = projects.take(4).toList();
-
-  final width = MediaQuery.of(context).size.width;
-
-  // نحدد كم كارت في الصف على حسب العرض
-  int crossAxisCount;
-  if (width >= 1200) {
-    crossAxisCount = 2; // Desktop كبير: صفين × 2
-  } else if (width >= 800) {
-    crossAxisCount = 2; // Tablet / لابتوب صغير
-  } else {
-    crossAxisCount = 1; // موبايل
-  }
-
-  final cardWidth = (width -
-          (Responsive.isMobile(context)
-              ? 40
-              : Responsive.isTablet(context)
-                  ? 80
-                  : 200) -
-          (crossAxisCount - 1) * 30) /
-      crossAxisCount;
-
-  return Container(
-    width: double.infinity,
-    decoration: BoxDecoration(
-      color: isDark ? AppTheme.darkSurface : Colors.white,
-    ),
-    padding: EdgeInsets.symmetric(
-      horizontal: Responsive.isMobile(context)
-          ? 20
-          : Responsive.isTablet(context)
-              ? 40
-              : 100,
-      vertical: Responsive.isMobile(context) ? 80 : 120,
-    ),
-    child: Column(
-      children: [
-        _buildSectionTitle('Featured Projects', isDark),
-        const SizedBox(height: 50),
-
-        // ======= الكروت المنسقة =======
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1300),
-          child: Wrap(
-            spacing: 30,
-            runSpacing: 40, // مسافة رأسية أكبر
-            alignment: WrapAlignment.center,
-            children: displayedProjects.asMap().entries.map((entry) {
-              final project = entry.value;
-              return TweenAnimationBuilder(
-                duration: Duration(milliseconds: 600 + (entry.key * 120)),
-                tween: Tween<double>(begin: 0, end: 1),
-                curve: Curves.easeOutCubic,
-                builder: (context, double value, child) {
-                  return Transform.translate(
-                    offset: Offset(0, 40 * (1 - value)),
-                    child: Opacity(
-                      opacity: value,
-                      child: SizedBox(
-                        width: cardWidth.clamp(320, 420), // يخلي كل كارت ثابت
-                        child: _buildProjectCard(project, context, isDark),
-                      ),
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
-        ),
-
-        const SizedBox(height: 45),
-        if (projects.length > 4) _buildViewAllButton(context, isDark),
-      ],
-    ),
-  );
-}
-
-  Widget _buildSectionTitle(String title, bool isDark) {
-    return Column(
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 48,
-            fontWeight: FontWeight.w900,
+    return Scaffold(
+      backgroundColor: isDark ? AppTheme.darkSurface : Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
             color: isDark ? AppTheme.darkText : AppTheme.lightText,
-            letterSpacing: -1,
+            size: 26,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'جميع المشاريع',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
+            color: isDark ? AppTheme.darkText : AppTheme.lightText,
           ),
         ),
-        const SizedBox(height: 15),
-        Container(
-          width: 80,
-          height: 5,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary,
-                isDark ? AppTheme.darkAccent : AppTheme.lightAccent,
-              ],
-            ),
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                    .withOpacity(0.4),
-                blurRadius: 15,
-                spreadRadius: 2,
-              ),
-            ],
-          ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+          horizontal: Responsive.isMobile(context)
+              ? 20
+              : Responsive.isTablet(context)
+                  ? 40
+                  : 100,
+          vertical: 30,
         ),
-      ],
-    );
-  }
-
-  Widget _buildViewAllButton(BuildContext context, bool isDark) {
-    return TweenAnimationBuilder(
-      duration: const Duration(milliseconds: 700),
-      tween: Tween<double>(begin: 0, end: 1),
-      curve: Curves.easeOutCubic,
-      builder: (context, double value, child) {
-        return Transform.scale(
-          scale: value,
-          child: Opacity(
-            opacity: value,
-            child: MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const AllProjectsScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
+        child: Column(
+          children: [
+            // شوية Info في الأعلى
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.work_outline_rounded,
+                  size: 22,
+                  color: isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '${projects.length} مشروع تم تنفيذه',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color:
                         isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary,
-                        isDark ? AppTheme.darkAccent : AppTheme.lightAccent,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                                .withOpacity(0.4),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'عرض جميع المشاريع',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                    ],
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 30),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1300),
+              child: Wrap(
+                spacing: 30,
+                runSpacing: 40,
+                alignment: WrapAlignment.center,
+                children: projects.asMap().entries.map((entry) {
+                  final project = entry.value;
+                  return TweenAnimationBuilder(
+                    duration:
+                        Duration(milliseconds: 400 + (entry.key * 80)),
+                    tween: Tween<double>(begin: 0, end: 1),
+                    curve: Curves.easeOutCubic,
+                    builder: (context, double value, child) {
+                      return Transform.translate(
+                        offset: Offset(0, 30 * (1 - value)),
+                        child: Opacity(
+                          opacity: value,
+                          child: _buildProjectCard(
+                            project,
+                            context,
+                            isDark,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
               ),
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
     );
   }
 
-  // باقي الكود بتاعك زي ما هو (من أول _buildProjectCard لحد _launchURL)
-  // انسخه كما هو من الرسالة الأولى بدون تغيير
   Widget _buildProjectCard(Project project, BuildContext context, bool isDark) {
     final isMobile = Responsive.isMobile(context);
     final cardWidth = isMobile ? double.infinity : 380.0;
@@ -254,7 +154,7 @@ Widget build(BuildContext context) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // نفس كود الصورة والبادج من عندك...
+                // صورة + Badge
                 Container(
                   height: 220,
                   width: double.infinity,
@@ -346,6 +246,7 @@ Widget build(BuildContext context) {
                     ],
                   ),
                 ),
+                // تفاصيل المشروع
                 Padding(
                   padding: const EdgeInsets.all(25),
                   child: Column(
@@ -354,7 +255,7 @@ Widget build(BuildContext context) {
                       Text(
                         project.title,
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 22,
                           fontWeight: FontWeight.w800,
                           color: isDark
                               ? AppTheme.darkText
@@ -362,7 +263,7 @@ Widget build(BuildContext context) {
                           letterSpacing: -0.5,
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 12),
                       Text(
                         project.description,
                         style: TextStyle(
@@ -372,10 +273,8 @@ Widget build(BuildContext context) {
                               : AppTheme.lightTextSecondary,
                           height: 1.6,
                         ),
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 18),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
@@ -420,7 +319,7 @@ Widget build(BuildContext context) {
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 22),
                       Row(
                         children: [
                           if (project.githubLink != null)
@@ -476,7 +375,7 @@ Widget build(BuildContext context) {
     );
   }
 
-  LinearGradient _getBadgeGradient(String badge) { /* نفس الكود */ 
+  LinearGradient _getBadgeGradient(String badge) {
     switch (badge.toLowerCase()) {
       case 'featured':
         return const LinearGradient(
@@ -497,7 +396,7 @@ Widget build(BuildContext context) {
     }
   }
 
-  Color _getBadgeColor(String badge) { /* نفس الكود */ 
+  Color _getBadgeColor(String badge) {
     switch (badge.toLowerCase()) {
       case 'featured':
         return const Color(0xFFFF6B6B);
@@ -510,7 +409,7 @@ Widget build(BuildContext context) {
     }
   }
 
-  IconData _getBadgeIcon(String badge) { /* نفس الكود */ 
+  IconData _getBadgeIcon(String badge) {
     switch (badge.toLowerCase()) {
       case 'featured':
         return Icons.star_rounded;

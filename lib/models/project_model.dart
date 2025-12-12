@@ -55,8 +55,7 @@ class Project {
           'Real-time Sync',
         ],
         imagePath: 'assets/img/mockup stock db.png',
-        videoLink:
-            '',
+        videoLink: '',
         badge: 'Cloud',
       ),
       Project(
@@ -69,6 +68,16 @@ class Project {
             'https://drive.google.com/file/d/1Pi4W4iKZGFf1arMaVdthMv0xMQlJLE_I/view?usp=drive_link',
         badge: 'Offline',
       ),
+      Project(
+        title: 'EduGate (School Management)',
+        description:
+            'A cross-platform school management system (Mobile & Desktop) designed for administrators and accountants. Provides real-time insights into student enrollment, payment status, financial reports, staff management (teachers, admin, maintenance), and school inventory such as devices, desks, chairs, and stationery. Includes features for adding new students, managing attendance, publishing announcements, sending notifications, and full control over school operations. Currently completed as a full UI/UX design and will be integrated with a database in the next phase.',
+        technologies: ['Flutter', 'Desktop App', 'School System', 'Management'],
+        imagePath: 'assets/img/edu_gate.png', // ضع مسار الصورة الصحيح
+        videoLink: "https://drive.google.com/file/d/1pMMNzpvL_O-fYa5hH_QFJx_GuCIaHkjS/view?usp=drive_link",
+        badge: 'Design Only',
+      ),
+
       Project(
         title: 'Doctor App',
         description:

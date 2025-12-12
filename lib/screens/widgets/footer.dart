@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:ui';
-import '../../core/theme/app_theme.dart';
 import '../../core/utils/responsive.dart';
 import '../../core/constants/app_constants.dart';
 
