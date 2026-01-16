@@ -2,7 +2,8 @@ class AppConstants {
   // Personal Info
   static const String name = 'Taha Hamada';
   static const String title = 'Flutter Developer';
-  static const String aboutMe = '''Hello! I'm Taha Hamada, a passionate Flutter Developer with a Bachelor's degree in Computer Science and Information Systems. I specialize in creating beautiful, performant mobile applications that deliver exceptional user experiences.
+  static const String aboutMe =
+      '''Hello! I'm Taha Hamada, a passionate Flutter Developer with a Bachelor's degree in Computer Science and Information Systems. I specialize in creating beautiful, performant mobile applications that deliver exceptional user experiences.
 
 With expertise in cross-platform development, I bring ideas to life through clean code and innovative solutions. I'm constantly learning and staying up-to-date with the latest technologies to deliver cutting-edge applications.
 
@@ -13,5 +14,6 @@ When I'm not coding, you can find me exploring new technologies, contributing to
   static const String email = 'tahahamada2901@gmail.com';
   static const String location = 'Giza, Egypt';
   static const String linkedIn = 'https://www.linkedin.com/in/taha-hamada';
-  static const String cvLink = 'https://drive.google.com/file/d/1v_31u6I3DNMHi60UPkcEohGzhTm9-0U2/view?usp=drivesdk';
+  static const String cvLink =
+      'https://drive.google.com/uc?export=download&id=1Sld4DrUk3GRIoslgbPCX60FtveaGAUJc';
 }

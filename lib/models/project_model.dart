@@ -35,49 +35,15 @@ class Project {
         badge: 'Featured',
       ),
       Project(
-        title: 'Management Stocks (Local)',
+        title: 'Management Stocks',
         description:
-            'Multi-platform inventory management system with SQLite local database. Perfect for single-device retail stores, pharmacies, and shops. Features comprehensive POS functionality, inventory tracking, sales/purchase management, and financial reporting. Works offline with fast performance. Supports Windows, Android, iOS, and Web.',
-        technologies: ['Flutter', 'SQLite', 'Offline-First', 'Local Database'],
-        imagePath: 'assets/img/mockap stoks sqlite.png',
+            'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
+        technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
+        imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
+        apkLink: '',
         videoLink:
-            'https://drive.google.com/file/d/13R36k2unKcR6YIgrvHGA2D7IJk58XZcp/view?usp=drivesdk',
-        badge: 'Offline',
+            'https://drive.google.com/file/d/15ZUcYG_v4OAItvlht42T_6IjWZvdpM6o/view',
       ),
-      Project(
-        title: 'Management Stocks (Cloud)',
-        description:
-            'Advanced cloud-based inventory management system powered by Supabase. Access your data anywhere, anytime from any device. Perfect for multi-branch stores and businesses that need real-time synchronization. Features include cloud storage, multi-user access, automatic backups, and real-time data sync across all devices. All data is securely stored on the cloud and accessible 24/7.',
-        technologies: [
-          'Flutter',
-          'Supabase',
-          'Cloud Database',
-          'Real-time Sync',
-        ],
-        imagePath: 'assets/img/mockup stock db.png',
-        videoLink: '',
-        badge: 'Cloud',
-      ),
-      Project(
-        title: 'Gym Manager (Local)',
-        description:
-            'A multi-platform gym management system built with Flutter and local SQLite. Enables gyms and fitness clubs to manage members, subscriptions, and attendance effortlessly. Features a modern dashboard, barcode-based check-in, revenue tracking, advanced reports, and instant data backup. Responsive, works on Windows and desktop, offline-first, and supports both light and dark mode for an optimal user experience.',
-        technologies: ['Flutter', 'SQLite', 'Offline-First', 'Local Database'],
-        imagePath: 'assets/img/gym manager.png',
-        videoLink:
-            'https://drive.google.com/file/d/1Pi4W4iKZGFf1arMaVdthMv0xMQlJLE_I/view?usp=drive_link',
-        badge: 'Offline',
-      ),
-      Project(
-        title: 'EduGate (School Management)',
-        description:
-            'A cross-platform school management system (Mobile & Desktop) designed for administrators and accountants. Provides real-time insights into student enrollment, payment status, financial reports, staff management (teachers, admin, maintenance), and school inventory such as devices, desks, chairs, and stationery. Includes features for adding new students, managing attendance, publishing announcements, sending notifications, and full control over school operations. Currently completed as a full UI/UX design and will be integrated with a database in the next phase.',
-        technologies: ['Flutter', 'Desktop App', 'School System', 'Management'],
-        imagePath: 'assets/img/edu_gate.png', // ضع مسار الصورة الصحيح
-        videoLink: "https://drive.google.com/file/d/1pMMNzpvL_O-fYa5hH_QFJx_GuCIaHkjS/view?usp=drive_link",
-        badge: 'Design Only',
-      ),
-
       Project(
         title: 'Doctor App',
         description:
@@ -112,6 +78,37 @@ class Project {
             'https://drive.google.com/file/d/10E1Z4pkwvx_5-Pv0gX1P33uAvP5Jt221/view',
         videoLink:
             'https://drive.google.com/file/d/1nGkVrfmaj2ZROVg9SGYs5Ej6TaD1-skm/view',
+      ),
+      Project(
+        title: 'Gym Manager (Local)',
+        description:
+            'A multi-platform gym management system built with Flutter and local SQLite. Enables gyms and fitness clubs to manage members, subscriptions, and attendance effortlessly. Features a modern dashboard, barcode-based check-in, revenue tracking, advanced reports, and instant data backup. Responsive, works on Windows and desktop, offline-first, and supports both light and dark mode for an optimal user experience.',
+        technologies: ['Flutter', 'SQLite', 'Offline-First', 'Local Database'],
+        imagePath: 'assets/img/gym manager.png',
+        videoLink:
+            'https://drive.google.com/file/d/1Pi4W4iKZGFf1arMaVdthMv0xMQlJLE_I/view?usp=drive_link',
+        badge: 'Offline',
+      ),
+      Project(
+        title: 'Management Stocks (Local)',
+        description:
+            'Multi-platform inventory management system with SQLite local database. Perfect for single-device retail stores, pharmacies, and shops. Features comprehensive POS functionality, inventory tracking, sales/purchase management, and financial reporting. Works offline with fast performance. Supports Windows, Android, iOS, and Web.',
+        technologies: ['Flutter', 'SQLite', 'Offline-First', 'Local Database'],
+        imagePath: 'assets/img/mockap stoks sqlite.png',
+        videoLink:
+            'https://drive.google.com/file/d/13R36k2unKcR6YIgrvHGA2D7IJk58XZcp/view?usp=drivesdk',
+        badge: 'Offline',
+      ),
+
+      Project(
+        title: 'EduGate (School Management)',
+        description:
+            'A cross-platform school management system (Mobile & Desktop) designed for administrators and accountants. Provides real-time insights into student enrollment, payment status, financial reports, staff management (teachers, admin, maintenance), and school inventory such as devices, desks, chairs, and stationery. Includes features for adding new students, managing attendance, publishing announcements, sending notifications, and full control over school operations. Currently completed as a full UI/UX design and will be integrated with a database in the next phase.',
+        technologies: ['Flutter', 'Desktop App', 'School System', 'Management'],
+        imagePath: 'assets/img/edu_gate.png', // ضع مسار الصورة الصحيح
+        videoLink:
+            "https://drive.google.com/file/d/1pMMNzpvL_O-fYa5hH_QFJx_GuCIaHkjS/view?usp=drive_link",
+        badge: 'Design Only',
       ),
     ];
   }
