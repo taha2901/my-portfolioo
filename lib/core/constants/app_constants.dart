@@ -15,5 +15,5 @@ When I'm not coding, you can find me exploring new technologies, contributing to
   static const String location = 'Giza, Egypt';
   static const String linkedIn = 'https://www.linkedin.com/in/taha-hamada';
   static const String cvLink =
-      'https://drive.google.com/uc?export=download&id=1Sld4DrUk3GRIoslgbPCX60FtveaGAUJc';
+      'https://drive.google.com/file/d/1S1_pooH4s8yWIVVFFYcHDTfXu5vQXfbt/view?usp=drivesdk';
 }
