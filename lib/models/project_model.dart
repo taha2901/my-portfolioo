@@ -22,27 +22,27 @@ class Project {
   static List<Project> getProjects() {
     return [
       Project(
+        title: 'Management Stocks',
+        description:
+            'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
+        technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
+        imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
+        apkLink: 'https://drive.google.com/file/d/1EPQuf8OUJ6ktaJZFof033Y2xRBAmg7LB/view?usp=drivesdk',
+        videoLink:
+            'https://drive.google.com/file/d/15ZUcYG_v4OAItvlht42T_6IjWZvdpM6o/view',
+      ),
+      Project(
         title: 'E-Commerce App',
         description:
             'A comprehensive e-commerce mobile application with user authentication, product catalog, shopping cart, and payment integration. Includes admin panel with permissions to add products, track orders, manage users, and delete content.',
         technologies: ['Flutter', 'Firebase', 'Bloc', 'Admin Panel'],
         githubLink: 'https://github.com/taha2901/e-commerce-shop',
         apkLink:
-            'https://drive.google.com/file/d/1ZNvtGQh0W9UBaU2VGtimp3ERLDnRap2g/view',
+            'https://drive.google.com/file/d/1Ub7xIGKAnrIjWFgJkkEyVOJBSw0oYWOX/view?usp=drivesdk',
         videoLink:
             'https://drive.google.com/file/d/1Zv12NvtWlqBPoGotsXo2F5w6C_F2uZZ5/view',
         imagePath: 'assets/img/Cover.png',
         badge: 'Featured',
-      ),
-      Project(
-        title: 'Management Stocks',
-        description:
-            'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
-        technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
-        imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
-        apkLink: '',
-        videoLink:
-            'https://drive.google.com/file/d/15ZUcYG_v4OAItvlht42T_6IjWZvdpM6o/view',
       ),
       Project(
         title: 'Doctor App',
@@ -51,7 +51,7 @@ class Project {
         technologies: ['Flutter', 'Bloc', 'REST API', 'Healthcare'],
         imagePath: 'assets/img/Product Overview.png',
         apkLink:
-            'https://drive.google.com/file/d/1t2MgExwf56JwGlTW5JspXvR9S4DzGG9I/view',
+            'https://drive.google.com/file/d/1c2W861KtW35DRVBMY_Z6bT2nkjvdWm7q/view?usp=drivesdk',
         githubLink: 'https://github.com/taha2901/DoctorDocApp',
         videoLink:
             'https://drive.google.com/file/d/1hY5CrJFWPnOiz3d0o0_fduygRrHv0X1m/view',
@@ -63,7 +63,7 @@ class Project {
         technologies: ['Flutter', 'Home Services', 'Multi-language'],
         imagePath: 'assets/img/unnamed.png',
         apkLink:
-            'https://drive.google.com/file/d/13bz61QFwtEXSG79x58dZV0lkPmYNZvqz/view',
+            'https://drive.google.com/file/d/1YEvF58aSRMssaZ3kkkfUiMiS49TOVO4x/view?usp=drivesdk',
         videoLink:
             'https://drive.google.com/file/d/1oKNF4huSwUoDrVTE41WdRao8dmM_puZ6/view',
       ),
