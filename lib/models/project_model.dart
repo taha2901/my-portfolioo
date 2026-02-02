@@ -27,9 +27,9 @@ class Project {
             'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
         technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
         imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
-        apkLink: 'https://drive.google.com/file/d/1EPQuf8OUJ6ktaJZFof033Y2xRBAmg7LB/view?usp=drivesdk',
+        apkLink: 'https://drive.google.com/file/d/1NMJjVptbIkzTFJixuu85F7pooYblovpK/view?usp=drive_link',
         videoLink:
-            'https://drive.google.com/file/d/15ZUcYG_v4OAItvlht42T_6IjWZvdpM6o/view',
+            'https://drive.google.com/file/d/1rNMoGTE7pqAsTfGJJO5Q1brqA1RRD9PJ/view?usp=drivesdk',
       ),
       Project(
         title: 'E-Commerce App',
