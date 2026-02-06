@@ -57,6 +57,19 @@ class Project {
             'https://drive.google.com/file/d/1hY5CrJFWPnOiz3d0o0_fduygRrHv0X1m/view',
       ),
       Project(
+        title: 'Loyalty App',
+        description:
+            'A Flutter-based loyalty system that uses QR code scanning to handle purchase and sale transactions, allowing users to earn points based on their role.',
+        technologies: ['Flutter', 'Firebase', 'Bloc', 'Admin Panel'],
+        githubLink: 'https://github.com/taha2901/loyalty_app',
+        apkLink:
+            'https://drive.google.com/file/d/11A9zJub7FFj8pg_Mq10rB68Cef571BHr/view?usp=drivesdk',
+        videoLink:
+            'https://drive.google.com/file/d/11qpsxgkcar8JnqBDO2YdVcFJC7GXgbZL/view?usp=drivesdk',
+        imagePath: 'assets/img/WhatsApp Image 2026-02-07 at 2.51.49 AM.jpeg',
+        badge: 'Featured',
+      ),
+      Project(
         title: 'Home Services App',
         description:
             'A mobile application for home services with user authentication, service catalog, shopping cart, and payment integration. Supports two languages for better accessibility.',
