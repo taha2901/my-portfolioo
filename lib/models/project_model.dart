@@ -6,7 +6,8 @@ class Project {
   final String? apkLink;
   final String? videoLink;
   final String imagePath;
-  final String? badge; // جديد - لإضافة Badge مميز
+  final String? badge;
+  final String category;
 
   Project({
     required this.title,
@@ -17,7 +18,19 @@ class Project {
     this.videoLink,
     required this.imagePath,
     this.badge,
+    this.category = 'Mobile', 
   });
+  static List<Project> getMobileProjects() {
+    return getProjects().where((p) => p.category == 'Mobile').toList();
+  }
+
+  static List<Project> getWebProjects() {
+    return getProjects().where((p) => p.category == 'Web').toList();
+  }
+
+  static List<Project> getBackendProjects() {
+    return getProjects().where((p) => p.category == 'Desktop').toList();
+  }
 
   static List<Project> getProjects() {
     return [
@@ -26,10 +39,23 @@ class Project {
         description:
             'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
         technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
-        imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
-        apkLink: 'https://drive.google.com/file/d/1NMJjVptbIkzTFJixuu85F7pooYblovpK/view?usp=drive_link',
+        imagePath:
+            'assets/img/Clean and Modern App Portfolio Mockup Presentation.png',
+        apkLink:
+            'https://drive.google.com/file/d/1NMJjVptbIkzTFJixuu85F7pooYblovpK/view?usp=drive_link',
         videoLink:
             'https://drive.google.com/file/d/1rNMoGTE7pqAsTfGJJO5Q1brqA1RRD9PJ/view?usp=drivesdk',
+        category: 'Mobile',
+      ),
+      Project(
+        title: 'Management Stocks',
+        description:
+            'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
+        technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
+        imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
+        videoLink:
+            'https://drive.google.com/file/d/1DH1TtyXv8l5f7sLBO0dw8BoCBXPnJKTj/view?usp=drivesdk',
+        category: 'Desktop',
       ),
       Project(
         title: 'E-Commerce App',
@@ -38,11 +64,12 @@ class Project {
         technologies: ['Flutter', 'Firebase', 'Bloc', 'Admin Panel'],
         githubLink: 'https://github.com/taha2901/e-commerce-shop',
         apkLink:
-            'https://drive.google.com/file/d/1Ub7xIGKAnrIjWFgJkkEyVOJBSw0oYWOX/view?usp=drivesdk',
+            'https://drive.google.com/file/d/1RvaUc7n68UihPDS2mBZcxBaqaqIMe7yb/view?usp=drivesdk',
         videoLink:
-            'https://drive.google.com/file/d/1Zv12NvtWlqBPoGotsXo2F5w6C_F2uZZ5/view',
+            'https://drive.google.com/file/d/1WQ3JyAvpWUoRX2v3Gn05dCLVFZAbGiFI/view?usp=drivesdk',
         imagePath: 'assets/img/Cover.png',
         badge: 'Featured',
+        category: 'Mobile',
       ),
       Project(
         title: 'Doctor App',
@@ -55,6 +82,7 @@ class Project {
         githubLink: 'https://github.com/taha2901/DoctorDocApp',
         videoLink:
             'https://drive.google.com/file/d/1hY5CrJFWPnOiz3d0o0_fduygRrHv0X1m/view',
+        category: 'Mobile',
       ),
       Project(
         title: 'Loyalty App',
@@ -66,8 +94,9 @@ class Project {
             'https://drive.google.com/file/d/11A9zJub7FFj8pg_Mq10rB68Cef571BHr/view?usp=drivesdk',
         videoLink:
             'https://drive.google.com/file/d/11qpsxgkcar8JnqBDO2YdVcFJC7GXgbZL/view?usp=drivesdk',
-        imagePath: 'assets/img/WhatsApp Image 2026-02-07 at 2.51.49 AM.jpeg',
+        imagePath: 'assets/img/loyalty app.png',
         badge: 'Featured',
+        category: 'Mobile',
       ),
       Project(
         title: 'Home Services App',
@@ -79,6 +108,7 @@ class Project {
             'https://drive.google.com/file/d/1YEvF58aSRMssaZ3kkkfUiMiS49TOVO4x/view?usp=drivesdk',
         videoLink:
             'https://drive.google.com/file/d/1oKNF4huSwUoDrVTE41WdRao8dmM_puZ6/view',
+        category: 'Mobile',
       ),
       Project(
         title: 'Daily Challenges Diabetes',
@@ -91,6 +121,7 @@ class Project {
             'https://drive.google.com/file/d/10E1Z4pkwvx_5-Pv0gX1P33uAvP5Jt221/view',
         videoLink:
             'https://drive.google.com/file/d/1nGkVrfmaj2ZROVg9SGYs5Ej6TaD1-skm/view',
+        category: 'Mobile',
       ),
       Project(
         title: 'Gym Manager (Local)',
@@ -101,6 +132,7 @@ class Project {
         videoLink:
             'https://drive.google.com/file/d/1Pi4W4iKZGFf1arMaVdthMv0xMQlJLE_I/view?usp=drive_link',
         badge: 'Offline',
+        category: 'Desktop',
       ),
       Project(
         title: 'Management Stocks (Local)',
@@ -111,6 +143,7 @@ class Project {
         videoLink:
             'https://drive.google.com/file/d/13R36k2unKcR6YIgrvHGA2D7IJk58XZcp/view?usp=drivesdk',
         badge: 'Offline',
+        category: 'Desktop',
       ),
 
       Project(
@@ -122,6 +155,7 @@ class Project {
         videoLink:
             "https://drive.google.com/file/d/1pMMNzpvL_O-fYa5hH_QFJx_GuCIaHkjS/view?usp=drive_link",
         badge: 'Design Only',
+        category: 'Desktop',
       ),
     ];
   }
