@@ -18,7 +18,7 @@ class Project {
     this.videoLink,
     required this.imagePath,
     this.badge,
-    this.category = 'Mobile', 
+    this.category = 'Mobile',
   });
   static List<Project> getMobileProjects() {
     return getProjects().where((p) => p.category == 'Mobile').toList();
@@ -48,16 +48,6 @@ class Project {
         category: 'Mobile',
       ),
       Project(
-        title: 'Management Stocks',
-        description:
-            'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
-        technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
-        imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
-        videoLink:
-            'https://drive.google.com/file/d/1DH1TtyXv8l5f7sLBO0dw8BoCBXPnJKTj/view?usp=drivesdk',
-        category: 'Desktop',
-      ),
-      Project(
         title: 'E-Commerce App',
         description:
             'A comprehensive e-commerce mobile application with user authentication, product catalog, shopping cart, and payment integration. Includes admin panel with permissions to add products, track orders, manage users, and delete content.',
@@ -72,16 +62,16 @@ class Project {
         category: 'Mobile',
       ),
       Project(
-        title: 'Doctor App',
+        title: 'Daily Challenges Diabetes',
         description:
-            'Medical application displaying doctors with appointment booking system and all medical specialties management. Features include doctor profiles, appointment scheduling, and specialty categorization.',
+            'Challenges Diabetes App – A mobile app for diabetic patients to manage medicines with reminders, book doctor appointments, track meals with recommendations, and monitor health measurements like blood sugar, pressure, and weight.',
         technologies: ['Flutter', 'Bloc', 'REST API', 'Healthcare'],
-        imagePath: 'assets/img/Product Overview.png',
+        imagePath: 'assets/img/ChatGPT Image Sep 5, 2025, 04_44_14 PM.png',
+        githubLink: 'https://github.com/taha2901/Diaily-Challenge-Diabetis',
         apkLink:
-            'https://drive.google.com/file/d/1VwhMaGUsjLUM1h508_FhAXRxMdfWPEzM/view?usp=drivesdk',
-        githubLink: 'https://github.com/taha2901/DoctorDocApp',
+            'https://drive.google.com/file/d/1oGVjf7TefQNExTtQwuE-KxnAr-jap9DR/view?usp=drivesdk',
         videoLink:
-            'https://drive.google.com/file/d/1FWfHmse6VVf1KQ2Tm6D61zcvIpXEuQV3/view?usp=drivesdk',
+            'https://drive.google.com/file/d/1DdwR92_YnzFSgl7GA8wNAz8OF04CzYz7/view?usp=drivesdk',
         category: 'Mobile',
       ),
       Project(
@@ -111,18 +101,42 @@ class Project {
         category: 'Mobile',
       ),
       Project(
-        title: 'Daily Challenges Diabetes',
+        title: 'WatchTube App',
         description:
-            'Challenges Diabetes App – A mobile app for diabetic patients to manage medicines with reminders, book doctor appointments, track meals with recommendations, and monitor health measurements like blood sugar, pressure, and weight.',
-        technologies: ['Flutter', 'Bloc', 'REST API', 'Healthcare'],
-        imagePath: 'assets/img/ChatGPT Image Sep 5, 2025, 04_44_14 PM.png',
-        githubLink: 'https://github.com/taha2901/Diaily-Challenge-Diabetis',
+            'A clean and minimal YouTube player app built with Flutter.',
+        technologies: ['Flutter', 'WatchTube', ],
+        imagePath: 'assets/img/watch_tube.png',
         apkLink:
-            'https://drive.google.com/file/d/1oGVjf7TefQNExTtQwuE-KxnAr-jap9DR/view?usp=drivesdk',
+            'https://drive.google.com/file/d/11goTwnRtpcin1eK_kGi75b9JnBwldOXB/view?usp=drivesdk',
         videoLink:
-            'https://drive.google.com/file/d/1DdwR92_YnzFSgl7GA8wNAz8OF04CzYz7/view?usp=drivesdk',
+            'https://drive.google.com/file/d/1ctSmD6_bjr5lTCjCX8jwQPo6BzGoTg9t/view?usp=drivesdk',
         category: 'Mobile',
       ),
+      Project(
+        title: 'Management Stocks',
+        description:
+            'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
+        technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
+        imagePath: 'assets/img/Screenshot 2026-01-16 030944.png',
+        videoLink:
+            'https://drive.google.com/file/d/1DH1TtyXv8l5f7sLBO0dw8BoCBXPnJKTj/view?usp=drivesdk',
+        category: 'Desktop',
+      ),
+
+      Project(
+        title: 'Doctor App',
+        description:
+            'Medical application displaying doctors with appointment booking system and all medical specialties management. Features include doctor profiles, appointment scheduling, and specialty categorization.',
+        technologies: ['Flutter', 'Bloc', 'REST API', 'Healthcare'],
+        imagePath: 'assets/img/Product Overview.png',
+        apkLink:
+            'https://drive.google.com/file/d/1VwhMaGUsjLUM1h508_FhAXRxMdfWPEzM/view?usp=drivesdk',
+        githubLink: 'https://github.com/taha2901/DoctorDocApp',
+        videoLink:
+            'https://drive.google.com/file/d/1FWfHmse6VVf1KQ2Tm6D61zcvIpXEuQV3/view?usp=drivesdk',
+        category: 'Mobile',
+      ),
+
       Project(
         title: 'Gym Manager (Local)',
         description:
