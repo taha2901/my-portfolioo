@@ -107,7 +107,7 @@ class Project {
         apkLink:
             'https://drive.google.com/file/d/1YEvF58aSRMssaZ3kkkfUiMiS49TOVO4x/view?usp=drivesdk',
         videoLink:
-            'https://drive.google.com/file/d/1oKNF4huSwUoDrVTE41WdRao8dmM_puZ6/view',
+            'https://drive.google.com/file/d/1e-G3_eP47xVgK1lDIvwDRE-WzpZELnjJ/view?usp=drivesdk',
         category: 'Mobile',
       ),
       Project(
@@ -118,9 +118,9 @@ class Project {
         imagePath: 'assets/img/ChatGPT Image Sep 5, 2025, 04_44_14 PM.png',
         githubLink: 'https://github.com/taha2901/Diaily-Challenge-Diabetis',
         apkLink:
-            'https://drive.google.com/file/d/10E1Z4pkwvx_5-Pv0gX1P33uAvP5Jt221/view',
+            'https://drive.google.com/file/d/1oGVjf7TefQNExTtQwuE-KxnAr-jap9DR/view?usp=drivesdk',
         videoLink:
-            'https://drive.google.com/file/d/1nGkVrfmaj2ZROVg9SGYs5Ej6TaD1-skm/view',
+            'https://drive.google.com/file/d/1DdwR92_YnzFSgl7GA8wNAz8OF04CzYz7/view?usp=drivesdk',
         category: 'Mobile',
       ),
       Project(
@@ -128,7 +128,7 @@ class Project {
         description:
             'A multi-platform gym management system built with Flutter and local SQLite. Enables gyms and fitness clubs to manage members, subscriptions, and attendance effortlessly. Features a modern dashboard, barcode-based check-in, revenue tracking, advanced reports, and instant data backup. Responsive, works on Windows and desktop, offline-first, and supports both light and dark mode for an optimal user experience.',
         technologies: ['Flutter', 'SQLite', 'Offline-First', 'Local Database'],
-        imagePath: 'assets/img/gym manager.png',
+        imagePath: 'assets/img/gym_manager.png',
         videoLink:
             'https://drive.google.com/file/d/1Pi4W4iKZGFf1arMaVdthMv0xMQlJLE_I/view?usp=drive_link',
         badge: 'Offline',
