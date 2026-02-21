@@ -78,10 +78,10 @@ class Project {
         technologies: ['Flutter', 'Bloc', 'REST API', 'Healthcare'],
         imagePath: 'assets/img/Product Overview.png',
         apkLink:
-            'https://drive.google.com/file/d/1c2W861KtW35DRVBMY_Z6bT2nkjvdWm7q/view?usp=drivesdk',
+            'https://drive.google.com/file/d/1VwhMaGUsjLUM1h508_FhAXRxMdfWPEzM/view?usp=drivesdk',
         githubLink: 'https://github.com/taha2901/DoctorDocApp',
         videoLink:
-            'https://drive.google.com/file/d/1hY5CrJFWPnOiz3d0o0_fduygRrHv0X1m/view',
+            'https://drive.google.com/file/d/1FWfHmse6VVf1KQ2Tm6D61zcvIpXEuQV3/view?usp=drivesdk',
         category: 'Mobile',
       ),
       Project(
@@ -93,7 +93,7 @@ class Project {
         apkLink:
             'https://drive.google.com/file/d/11A9zJub7FFj8pg_Mq10rB68Cef571BHr/view?usp=drivesdk',
         videoLink:
-            'https://drive.google.com/file/d/11qpsxgkcar8JnqBDO2YdVcFJC7GXgbZL/view?usp=drivesdk',
+            'https://drive.google.com/file/d/1OHdOTA3ZsM7FT99oSHx_3yWO1x8WFT5a/view?usp=drivesdk',
         imagePath: 'assets/img/loyalty app.png',
         badge: 'Featured',
         category: 'Mobile',
