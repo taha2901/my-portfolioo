@@ -47,6 +47,20 @@ class Project {
             'https://drive.google.com/file/d/1rNMoGTE7pqAsTfGJJO5Q1brqA1RRD9PJ/view?usp=drivesdk',
         category: 'Mobile',
       ),
+       Project(
+        title: 'Shop App',
+        description:
+            'A comprehensive shop mobile application with user authentication, product catalog, shopping cart, and payment integration. Include Todo List  .',
+        technologies: ['Flutter', 'Api', 'Bloc', 'Sqlite'],
+        githubLink: 'https://github.com/taha2901/store-app',
+        apkLink:
+            'https://drive.google.com/file/d/1czYyfCYPrml87CBywt9W7DJdwZMyvT8A/view?usp=drivesdk',
+        videoLink:
+            'https://drive.google.com/file/d/1EcTfj62768_xizR4v2N8expBql7N9dQy/view?usp=drivesdk',
+        imagePath: 'assets/img/store app.png',
+        badge: 'Featured',
+        category: 'Mobile',
+      ),
       Project(
         title: 'E-Commerce App',
         description:
