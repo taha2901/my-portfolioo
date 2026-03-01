@@ -47,7 +47,7 @@ class Project {
             'https://drive.google.com/file/d/1rNMoGTE7pqAsTfGJJO5Q1brqA1RRD9PJ/view?usp=drivesdk',
         category: 'Mobile',
       ),
-       Project(
+      Project(
         title: 'Shop App',
         description:
             'A comprehensive shop mobile application with user authentication, product catalog, shopping cart, and payment integration. Include Todo List  .',
@@ -58,6 +58,19 @@ class Project {
         videoLink:
             'https://drive.google.com/file/d/1EcTfj62768_xizR4v2N8expBql7N9dQy/view?usp=drivesdk',
         imagePath: 'assets/img/store app.png',
+        badge: 'Featured',
+        category: 'Mobile',
+      ),
+      Project(
+        title: 'MarketLens',
+        description:
+            'A smart trading application providing real-time stock data, market signals, metals prices, macroeconomic reports, and interactive dashboards. Built with Flutter for cross-platform performance.',
+        technologies: ['Flutter', 'Bloc', 'Charts'],
+        apkLink:
+            'https://drive.google.com/file/d/1Xwmmg_NxH6jUkcmXSnmgV_jUTdIhvaGu/view?usp=drivesdk',
+        videoLink:
+            'https://drive.google.com/file/d/1mdsqmTu1RmwmW-hjePcpP9KSl_2MjqRn/view?usp=drivesdk',
+        imagePath: 'assets/img/market_lens_mocup.png', // استبدل بالصورة المناسبة
         badge: 'Featured',
         category: 'Mobile',
       ),
@@ -118,7 +131,7 @@ class Project {
         title: 'WatchTube App',
         description:
             'A clean and minimal YouTube player app built with Flutter.',
-        technologies: ['Flutter', 'WatchTube', ],
+        technologies: ['Flutter', 'WatchTube'],
         imagePath: 'assets/img/watch_tube.png',
         apkLink:
             'https://drive.google.com/file/d/11goTwnRtpcin1eK_kGi75b9JnBwldOXB/view?usp=drivesdk',

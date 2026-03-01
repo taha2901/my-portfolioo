@@ -164,7 +164,7 @@ class AboutSection extends StatelessWidget {
     final infoCards = [
       _buildInfoCard('🎓', 'Education', 'Computer Science & IS', isDark, isMobile, cardWidth),
       _buildInfoCard('💼', 'Experience', '1+ Years', isDark, isMobile, cardWidth),
-      _buildInfoCard('🚀', 'Projects', '12+ Completed', isDark, isMobile, cardWidth),
+      _buildInfoCard('🚀', 'Projects', '13+ Completed', isDark, isMobile, cardWidth),
     ];
 
     if (isMobile) {
