@@ -16,7 +16,13 @@ class AboutSection extends StatelessWidget {
         final width = constraints.maxWidth;
         final isMobile = width < 650;
         final isTablet = width >= 650 && width < 1100;
-        final horizontalPadding = (isMobile ? 20 : isTablet ? 40 : 100).toDouble();
+        final horizontalPadding =
+            (isMobile
+                    ? 20
+                    : isTablet
+                    ? 40
+                    : 100)
+                .toDouble();
         final verticalPadding = (isMobile ? 70 : 120).toDouble();
         final sectionTitleFontSize = isMobile ? 32.0 : 48.0;
 
@@ -81,11 +87,15 @@ class AboutSection extends StatelessWidget {
                         stream: PortfolioService().getSettings(),
                         builder: (context, settingsSnap) {
                           final settings = settingsSnap.data ?? {};
-                          final aboutMe = settings['aboutMe']?.toString().isNotEmpty == true
+                          final aboutMe =
+                              settings['aboutMe']?.toString().isNotEmpty == true
                               ? settings['aboutMe']
                               : AppConstants.aboutMe;
-                          final experience = settings['experience']?.toString() ?? '1+ Years';
-                          final projectsCount = settings['projectsCount']?.toString() ?? '14+ Completed';
+                          final experience =
+                              settings['experience']?.toString() ?? '1+ Years';
+                          final projectsCount =
+                              settings['projectsCount']?.toString() ??
+                              '14+ Completed';
 
                           return Column(
                             children: [
@@ -115,17 +125,65 @@ class AboutSection extends StatelessWidget {
 
                               const SizedBox(height: 35),
 
-                              Wrap(
-                                spacing: 15,
-                                runSpacing: 15,
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  _buildHighlight('Clean Code', isDark, isMobile),
-                                  _buildHighlight('Fast Development', isDark, isMobile),
-                                  _buildHighlight('User-Focused', isDark, isMobile),
-                                  _buildHighlight('Responsive Design', isDark, isMobile),
-                                ],
-                              ),
+                              isMobile
+                                  ? GridView.count(
+                                      crossAxisCount: 2,
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      childAspectRatio: 3.2,
+                                      children: [
+                                        _buildHighlight(
+                                          'Clean Code',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                        _buildHighlight(
+                                          'Fast Development',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                        _buildHighlight(
+                                          'User-Focused',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                        _buildHighlight(
+                                          'Responsive Design',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                      ],
+                                    )
+                                  : Wrap(
+                                      spacing: 15,
+                                      runSpacing: 15,
+                                      alignment: WrapAlignment.center,
+                                      children: [
+                                        _buildHighlight(
+                                          'Clean Code',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                        _buildHighlight(
+                                          'Fast Development',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                        _buildHighlight(
+                                          'User-Focused',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                        _buildHighlight(
+                                          'Responsive Design',
+                                          isDark,
+                                          isMobile,
+                                        ),
+                                      ],
+                                    ),
                             ],
                           );
                         },
@@ -180,8 +238,12 @@ class AboutSection extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(0.9),
-            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(0.8),
+            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(
+              0.9,
+            ),
+            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(
+              0.8,
+            ),
           ],
         ),
         borderRadius: BorderRadius.circular(25),
@@ -283,10 +345,12 @@ class _DynamicInfoCards extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: infoCards
-                      .map((card) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: card,
-                          ))
+                      .map(
+                        (card) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: card,
+                        ),
+                      )
                       .toList(),
                 ),
               );
@@ -295,11 +359,13 @@ class _DynamicInfoCards extends StatelessWidget {
                 children: infoCards
                     .asMap()
                     .entries
-                    .expand((e) => [
-                          Expanded(child: e.value),
-                          if (e.key < infoCards.length - 1)
-                            const SizedBox(width: 16),
-                        ])
+                    .expand(
+                      (e) => [
+                        Expanded(child: e.value),
+                        if (e.key < infoCards.length - 1)
+                          const SizedBox(width: 16),
+                      ],
+                    )
                     .toList(),
               );
             }
@@ -323,8 +389,12 @@ class _DynamicInfoCards extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(0.2),
-            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(0.1),
+            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(
+              0.2,
+            ),
+            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(
+              0.1,
+            ),
           ],
         ),
         borderRadius: BorderRadius.circular(20),

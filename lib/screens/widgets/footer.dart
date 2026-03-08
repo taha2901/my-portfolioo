@@ -526,11 +526,7 @@ class FooterSection extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        const Icon(
-          Icons.favorite,
-          color: Color(0xFFE91E63),
-          size: 14,
-        ),
+        const Text('Taha Hamada', style: TextStyle(color: Colors.white)),
         Text(
           'using Flutter',
           style: TextStyle(
