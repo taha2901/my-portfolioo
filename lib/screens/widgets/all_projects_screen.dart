@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taha_portfolio/core/services/portfolio_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
-import '../../core/theme/app_theme.dart';
 import '../../core/utils/responsive.dart';
 import '../../models/project_model.dart';
 
@@ -572,7 +571,7 @@ class _CardImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 260,
       child: Stack(
         fit: StackFit.expand,
         children: [

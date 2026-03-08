@@ -52,7 +52,7 @@ class Project {
             'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
         technologies: ['Flutter', 'Mobile', 'Desktop', 'Api'],
         imagePath:
-            'assets/img/Clean and Modern App Portfolio Mockup Presentation.png',
+            'assets/img/pos_mockup.png',
         apkLink:
             'https://drive.google.com/file/d/1NMJjVptbIkzTFJixuu85F7pooYblovpK/view?usp=drive_link',
         videoLink:
