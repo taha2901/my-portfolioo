@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taha_portfolio/core/services/portfolio_service.dart';
-import 'package:taha_portfolio/models/project_model.dart';
-import 'package:taha_portfolio/models/skill_model.dart'; // ← تأكد من المسار الصح
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
@@ -24,8 +22,6 @@ class _SettingsTabState extends State<SettingsTab> {
   final _projects = TextEditingController();
   bool _loading = false;
   bool _saved = false;
-  bool _seeding = false;
-  bool _seedingSkills = false;
 
   @override
   void dispose() {
@@ -73,132 +69,7 @@ class _SettingsTabState extends State<SettingsTab> {
     if (mounted) setState(() => _saved = false);
   }
 
-  // ─── Seed All Skills ──────────────────────────────────────
-  Future<void> _seedAllSkills() async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Seed All Skills?'),
-        content: const Text(
-          'هيرفع كل الـ Skills من الكود لـ Firestore.\n\n'
-          '⚠️ لو ضغطته أكتر من مرة هيتضافوا مرتين!\n'
-          'استخدمه مرة واحدة بس.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-            child: const Text('Seed!', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm != true) return;
-
-    setState(() => _seedingSkills = true);
-
-    try {
-      final allSkills = Skill.getSkills();
-      for (int i = 0; i < allSkills.length; i++) {
-        await service.addSkill(allSkills[i].name, allSkills[i].emoji);
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('✅ تم رفع ${allSkills.length} skill بنجاح!'),
-            backgroundColor: Colors.blue,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('❌ حصل خطأ: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _seedingSkills = false);
-    }
-  }
-
-  // ─── Seed All Projects ────────────────────────────────────
-  Future<void> _seedAllProjects() async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Seed All Projects?'),
-        content: const Text(
-          'هيرفع كل المشاريع من الكود لـ Firestore.\n\n'
-          '⚠️ لو ضغطته أكتر من مرة هيتضافوا مرتين!\n'
-          'استخدمه مرة واحدة بس.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: const Text('Seed!', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm != true) return;
-
-    setState(() => _seeding = true);
-
-    try {
-      final allProjects = Project.getProjects();
-      await service.seedProjects(
-        allProjects.map((p) => {
-          'title': p.title,
-          'description': p.description,
-          'technologies': p.technologies,
-          'imagePath': p.imagePath,
-          'category': p.category,
-          'githubLink': p.githubLink,
-          'apkLink': p.apkLink,
-          'videoLink': p.videoLink,
-          'badge': p.badge,
-        }).toList(),
-      );
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('✅ تم رفع ${allProjects.length} مشروع بنجاح!'),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('❌ حصل خطأ: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _seeding = false);
-    }
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -214,32 +85,7 @@ class _SettingsTabState extends State<SettingsTab> {
           padding: const EdgeInsets.all(20),
           children: [
             // ── Seed Skills ───────────────────────────────
-            _SeedCard(
-              emoji: '🧠',
-              title: 'Seed Skills to Firestore',
-              subtitle: 'يرفع كل الـ Skills من skill_model.dart لـ Firestore.\nاستخدمه مرة واحدة بس!',
-              buttonLabel: '🧠 Upload All Skills (${Skill.getSkills().length})',
-              buttonColor: Colors.blue,
-              gradientColors: [Colors.blue, Colors.indigo],
-              isLoading: _seedingSkills,
-              onPressed: _seedAllSkills,
-              isDark: isDark,
-            ),
-
-            const SizedBox(height: 12),
-
-            // ── Seed Projects ─────────────────────────────
-            _SeedCard(
-              emoji: '🚀',
-              title: 'Seed Projects to Firestore',
-              subtitle: 'يرفع كل المشاريع من project_model.dart لـ Firestore.\nاستخدمه مرة واحدة بس!',
-              buttonLabel: '🚀 Upload All Projects (${Project.getProjects().length})',
-              buttonColor: Colors.orange[600]!,
-              gradientColors: [Colors.orange, Colors.deepOrange],
-              isLoading: _seeding,
-              onPressed: _seedAllProjects,
-              isDark: isDark,
-            ),
+          
 
             const SizedBox(height: 16),
 

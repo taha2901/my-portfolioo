@@ -75,32 +75,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               style: TextStyle(color: Colors.red, fontSize: 13),
             ),
           ),
-          const SizedBox(width: 8),
-          ElevatedButton(
-            onPressed: () async {
-              final service = PortfolioService();
-              final projects = Project.getProjects();
-              for (final p in projects) {
-                await service.addProject({
-                  'title': p.title,
-                  'description': p.description,
-                  'technologies': p.technologies,
-                  'imagePath': p.imagePath,
-                  'category': p.category,
-                  'githubLink': p.githubLink,
-                  'apkLink': p.apkLink,
-                  'videoLink': p.videoLink,
-                  'badge': p.badge,
-                });
-              }
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('✅ Done! ${projects.length} projects uploaded'),
-                ),
-              );
-            },
-            child: const Text('🚀 Upload All Projects to Firestore'),
-          ),
         ],
       ),
       body: Column(

@@ -47,7 +47,6 @@ class _ContactSectionState extends State<ContactSection>
       color: isDark ? const Color(0xFF080B14) : const Color(0xFFF7F8FC),
       child: Stack(
         children: [
-          // ── Glow orbs ──
           Positioned(
             top: -80,
             left: -60,
@@ -71,8 +70,9 @@ class _ContactSectionState extends State<ContactSection>
               vertical: isMobile ? 72 : 120,
             ),
             child: Column(
+              // FIX: crossAxisAlignment stretch يخلي كل الـ children تاخد كامل العرض
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // ── Header ──
                 FadeTransition(
                   opacity: _headerAnim,
                   child: SlideTransition(
@@ -81,15 +81,15 @@ class _ContactSectionState extends State<ContactSection>
                       end: Offset.zero,
                     ).animate(_headerAnim),
                     child: _SectionHeader(
-                        isDark: isDark,
-                        isMobile: isMobile,
-                        isTablet: isTablet),
+                      isDark: isDark,
+                      isMobile: isMobile,
+                      isTablet: isTablet,
+                    ),
                   ),
                 ),
 
                 SizedBox(height: isMobile ? 52 : 80),
 
-                // ── Main layout ──
                 isMobile
                     ? _MobileLayout(isDark: isDark)
                     : _DesktopLayout(isDark: isDark, isTablet: isTablet),
@@ -112,29 +112,29 @@ class _DesktopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 1100),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Left — big CTA card
-          Expanded(
-            flex: 5,
-            child: _CTACard(isDark: isDark),
-          ),
-          const SizedBox(width: 24),
-          // Right — stacked info rows + socials
-          Expanded(
-            flex: 4,
-            child: Column(
-              children: [
-                _InfoStack(isDark: isDark),
-                const SizedBox(height: 16),
-                _SocialRow(isDark: isDark, isMobile: false),
-              ],
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 1100),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 5,
+              child: _CTACard(isDark: isDark),
             ),
-          ),
-        ],
+            const SizedBox(width: 24),
+            Expanded(
+              flex: 4,
+              child: Column(
+                children: [
+                  _InfoStack(isDark: isDark),
+                  const SizedBox(height: 16),
+                  _SocialRow(isDark: isDark, isMobile: false),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -147,6 +147,8 @@ class _MobileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      // FIX: stretch يخلي كل widget تاخد كامل العرض
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _CTACard(isDark: isDark),
         const SizedBox(height: 16),
@@ -159,7 +161,7 @@ class _MobileLayout extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  CTA Card — Left side big card
+//  CTA Card
 // ═══════════════════════════════════════════════════════════
 
 class _CTACard extends StatefulWidget {
@@ -178,6 +180,7 @@ class _CTACardState extends State<_CTACard> {
     final isDark = widget.isDark;
     final primary = isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary;
     final accent = isDark ? AppTheme.darkAccent : AppTheme.lightAccent;
+    final isMobile = Responsive.isMobile(context);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
@@ -187,16 +190,15 @@ class _CTACardState extends State<_CTACard> {
         onTap: () => _launch('mailto:${AppConstants.email}'),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
+          // FIX: double.infinity يضمن أخذ كامل العرض المتاح
+          width: double.infinity,
           transform: Matrix4.translationValues(0, _hovered ? -6 : 0, 0),
-          padding: const EdgeInsets.all(40),
+          padding: EdgeInsets.all(isMobile ? 28 : 40),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                primary,
-                accent,
-              ],
+              colors: [primary, accent],
             ),
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
@@ -211,7 +213,6 @@ class _CTACardState extends State<_CTACard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icon
               Container(
                 width: 56,
                 height: 56,
@@ -232,10 +233,10 @@ class _CTACardState extends State<_CTACard> {
 
               const SizedBox(height: 32),
 
-              const Text(
+              Text(
                 'Send me a\nmessage',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: isMobile ? 26 : 32,
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
                   height: 1.15,
@@ -257,10 +258,9 @@ class _CTACardState extends State<_CTACard> {
 
               const SizedBox(height: 36),
 
-              // Button
+              // FIX: Button بـ IntrinsicWidth بدل min
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14),
@@ -287,8 +287,7 @@ class _CTACardState extends State<_CTACard> {
                     const SizedBox(width: 10),
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 250),
-                      transform: Matrix4.translationValues(
-                          _hovered ? 4 : 0, 0, 0),
+                      transform: Matrix4.translationValues(_hovered ? 4 : 0, 0, 0),
                       child: Icon(
                         Icons.arrow_forward_rounded,
                         size: 16,
@@ -312,7 +311,7 @@ class _CTACardState extends State<_CTACard> {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  Info Stack — phone, location, linkedin as rows
+//  Info Stack
 // ═══════════════════════════════════════════════════════════
 
 class _InfoStack extends StatelessWidget {
@@ -353,6 +352,8 @@ class _InfoStack extends StatelessWidget {
     ];
 
     return Container(
+      // FIX: width مضمون
+      width: double.infinity,
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF111827) : Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -446,7 +447,6 @@ class _InfoRowState extends State<_InfoRow> {
             ),
             child: Row(
               children: [
-                // colored dot
                 Container(
                   width: 40,
                   height: 40,
@@ -456,11 +456,8 @@ class _InfoRowState extends State<_InfoRow> {
                   ),
                   child: Center(
                     child: widget.isFa
-                        ? FaIcon(widget.icon,
-                            size: 16,
-                            color: widget.color)
-                        : Icon(widget.icon,
-                            size: 18, color: widget.color),
+                        ? FaIcon(widget.icon, size: 16, color: widget.color)
+                        : Icon(widget.icon, size: 18, color: widget.color),
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -499,9 +496,7 @@ class _InfoRowState extends State<_InfoRow> {
                     child: Icon(
                       Icons.north_east_rounded,
                       size: 16,
-                      color: widget.isDark
-                          ? Colors.white
-                          : Colors.black,
+                      color: widget.isDark ? Colors.white : Colors.black,
                     ),
                   ),
               ],
@@ -519,7 +514,7 @@ class _InfoRowState extends State<_InfoRow> {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  Social Row — icon-only buttons
+//  Social Row
 // ═══════════════════════════════════════════════════════════
 
 class _SocialRow extends StatelessWidget {
@@ -538,6 +533,7 @@ class _SocialRow extends StatelessWidget {
     ];
 
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF111827) : Colors.white,
@@ -625,14 +621,10 @@ class _SocialIconBtnState extends State<_SocialIconBtn> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: _hovered
-                  ? widget.color
-                  : widget.color.withOpacity(0.10),
+              color: _hovered ? widget.color : widget.color.withOpacity(0.10),
               borderRadius: BorderRadius.circular(13),
               border: Border.all(
-                color: _hovered
-                    ? widget.color
-                    : widget.color.withOpacity(0.22),
+                color: _hovered ? widget.color : widget.color.withOpacity(0.22),
                 width: 1.5,
               ),
               boxShadow: _hovered
@@ -664,10 +656,11 @@ class _SocialIconBtnState extends State<_SocialIconBtn> {
 // ═══════════════════════════════════════════════════════════
 class _SectionHeader extends StatelessWidget {
   final bool isDark, isMobile, isTablet;
-  const _SectionHeader(
-      {required this.isDark,
-      required this.isMobile,
-      required this.isTablet});
+  const _SectionHeader({
+    required this.isDark,
+    required this.isMobile,
+    required this.isTablet,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -688,8 +681,7 @@ class _SectionHeader extends StatelessWidget {
               Container(
                 width: 7,
                 height: 7,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: primary),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: primary),
               ),
               const SizedBox(width: 8),
               Text(

@@ -11,6 +11,7 @@ class SkillsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final service = PortfolioService();
+    final isMobile = Responsive.isMobile(context);
 
     return Container(
       width: double.infinity,
@@ -18,12 +19,12 @@ class SkillsSection extends StatelessWidget {
         color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: Responsive.isMobile(context)
+        horizontal: isMobile
             ? 20
             : Responsive.isTablet(context)
                 ? 40
                 : 100,
-        vertical: Responsive.isMobile(context) ? 80 : 120,
+        vertical: isMobile ? 80 : 120,
       ),
       child: Column(
         children: [
@@ -44,6 +45,10 @@ class SkillsSection extends StatelessWidget {
                     if (constraints.maxWidth > 900) crossAxisCount = 5;
                     else if (constraints.maxWidth > 600) crossAxisCount = 4;
 
+                    // FIX: childAspectRatio ديناميكي حسب عدد الأعمدة
+                    final double cardSize = constraints.maxWidth / crossAxisCount - 20;
+                    final double aspectRatio = cardSize / (cardSize + 10); // إضافة مساحة للنص
+
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -52,7 +57,8 @@ class SkillsSection extends StatelessWidget {
                         crossAxisCount: crossAxisCount,
                         mainAxisSpacing: 20,
                         crossAxisSpacing: 20,
-                        childAspectRatio: 1,
+                        // FIX: قيمة ثابتة أقل من 1 تعطي مساحة كافية للنص
+                        childAspectRatio: isMobile ? 0.85 : 0.9,
                       ),
                       itemBuilder: (context, index) {
                         final skill = skills[index];
@@ -89,13 +95,15 @@ class SkillsSection extends StatelessWidget {
   Widget _buildSectionTitle(String title, bool isDark) {
     return Column(
       children: [
-        Text(title,
-            style: TextStyle(
-              fontSize: 48,
-              fontWeight: FontWeight.w900,
-              color: isDark ? AppTheme.darkText : AppTheme.lightText,
-              letterSpacing: -1,
-            )),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 48,
+            fontWeight: FontWeight.w900,
+            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+            letterSpacing: -1,
+          ),
+        ),
         const SizedBox(height: 15),
         Container(
           width: 80,
@@ -115,6 +123,7 @@ class SkillsSection extends StatelessWidget {
   Widget _buildSkillCard(
       String name, String emoji, BuildContext context, bool isDark) {
     final isMobile = Responsive.isMobile(context);
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: ClipRRect(
@@ -122,17 +131,26 @@ class SkillsSection extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            padding: const EdgeInsets.all(10),
+            // FIX: padding أقل على mobile + overflow مضمون
+            padding: EdgeInsets.all(isMobile ? 8 : 10),
             decoration: BoxDecoration(
               gradient: isDark
-                  ? LinearGradient(colors: [
-                      AppTheme.darkCard.withOpacity(0.8),
-                      AppTheme.darkCard.withOpacity(0.6),
-                    ], begin: Alignment.topLeft, end: Alignment.bottomRight)
-                  : LinearGradient(colors: [
-                      Colors.white.withOpacity(0.9),
-                      Colors.white.withOpacity(0.7),
-                    ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                  ? LinearGradient(
+                      colors: [
+                        AppTheme.darkCard.withOpacity(0.8),
+                        AppTheme.darkCard.withOpacity(0.6),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    )
+                  : LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.9),
+                        Colors.white.withOpacity(0.7),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: isDark
@@ -152,17 +170,30 @@ class SkillsSection extends StatelessWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min, // FIX: لا يتمدد أكثر من اللازم
               children: [
-                Text(emoji,
-                    style: TextStyle(fontSize: isMobile ? 40 : 50)),
-                const SizedBox(height: 12),
-                Text(name,
-                    style: TextStyle(
-                      fontSize: isMobile ? 14 : 16,
-                      fontWeight: FontWeight.w700,
-                      color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                    ),
-                    textAlign: TextAlign.center),
+                // FIX: حجم أصغر على mobile وأقل overflow
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    emoji,
+                    style: TextStyle(fontSize: isMobile ? 32 : 46),
+                  ),
+                ),
+                SizedBox(height: isMobile ? 6 : 12),
+                // FIX: النص مع overflow ellipsis ومحاذاة مضمونة
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: isMobile ? 11 : 15,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                    height: 1.2,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
           ),

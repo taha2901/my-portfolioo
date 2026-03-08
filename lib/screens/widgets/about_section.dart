@@ -99,7 +99,6 @@ class AboutSection extends StatelessWidget {
 
                           return Column(
                             children: [
-                              // ── Info Cards: Projects & Skills من Firestore ──
                               _DynamicInfoCards(
                                 isDark: isDark,
                                 isMobile: isMobile,
@@ -112,7 +111,7 @@ class AboutSection extends StatelessWidget {
                               Text(
                                 aboutMe,
                                 textAlign: TextAlign.center,
-                                textScaleFactor: isMobile ? 0.85 : 1.0,
+                                textScaler: TextScaler.linear(isMobile ? 0.85 : 1.0),
                                 style: TextStyle(
                                   fontSize: isMobile ? 14 : 18,
                                   color: isDark
@@ -125,65 +124,18 @@ class AboutSection extends StatelessWidget {
 
                               const SizedBox(height: 35),
 
-                              isMobile
-                                  ? GridView.count(
-                                      crossAxisCount: 2,
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                      childAspectRatio: 3.2,
-                                      children: [
-                                        _buildHighlight(
-                                          'Clean Code',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                        _buildHighlight(
-                                          'Fast Development',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                        _buildHighlight(
-                                          'User-Focused',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                        _buildHighlight(
-                                          'Responsive Design',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                      ],
-                                    )
-                                  : Wrap(
-                                      spacing: 15,
-                                      runSpacing: 15,
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        _buildHighlight(
-                                          'Clean Code',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                        _buildHighlight(
-                                          'Fast Development',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                        _buildHighlight(
-                                          'User-Focused',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                        _buildHighlight(
-                                          'Responsive Design',
-                                          isDark,
-                                          isMobile,
-                                        ),
-                                      ],
-                                    ),
+                              // FIX: استخدام Wrap دايمًا مع ضبط alignment صح
+                              Wrap(
+                                spacing: isMobile ? 8 : 15,
+                                runSpacing: isMobile ? 8 : 15,
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  _buildHighlight('Clean Code', isDark, isMobile),
+                                  _buildHighlight('Fast Development', isDark, isMobile),
+                                  _buildHighlight('User-Focused', isDark, isMobile),
+                                  _buildHighlight('Responsive Design', isDark, isMobile),
+                                ],
+                              ),
                             ],
                           );
                         },
@@ -232,34 +184,33 @@ class AboutSection extends StatelessWidget {
   Widget _buildHighlight(String text, bool isDark, bool isMobile) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 15 : 20,
-        vertical: isMobile ? 10 : 12,
+        horizontal: isMobile ? 14 : 20,
+        vertical: isMobile ? 9 : 12,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(
-              0.9,
-            ),
-            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(
-              0.8,
-            ),
+            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(0.9),
+            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(0.8),
           ],
         ),
         borderRadius: BorderRadius.circular(25),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min, // FIX: مهم جداً - يمنع التمدد
         children: [
-          const Icon(Icons.check_circle, color: Colors.white, size: 18),
+          Icon(Icons.check_circle, color: Colors.white, size: isMobile ? 16 : 18),
           const SizedBox(width: 6),
-          Text(
-            text,
-            textScaleFactor: isMobile ? 0.9 : 1.0,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
+          Flexible( // FIX: Flexible بدل Text مباشرة
+            child: Text(
+              text,
+              textScaler: TextScaler.linear(isMobile ? 0.9 : 1.0),
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: isMobile ? 13 : 15,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
@@ -269,7 +220,7 @@ class AboutSection extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════
-// Dynamic Info Cards — Projects & Skills من Firestore
+// Dynamic Info Cards
 // ═══════════════════════════════════════════════════════════
 class _DynamicInfoCards extends StatelessWidget {
   final bool isDark;
@@ -286,72 +237,45 @@ class _DynamicInfoCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final cardWidth = isMobile ? (width - 80) / 3 : null;
-
-    // Projects count من Firestore (عدد الـ docs الفعلي)
     return StreamBuilder<List<Map<String, dynamic>>>(
       stream: PortfolioService().getProjects(),
       builder: (context, projectsSnap) {
         final projectsTotal = projectsSnap.data?.length ?? 0;
 
-        // Skills count من Firestore (عدد الـ docs الفعلي)
         return StreamBuilder<List<Map<String, dynamic>>>(
           stream: PortfolioService().getSkills(),
           builder: (context, skillsSnap) {
             final skillsTotal = skillsSnap.data?.length ?? 0;
 
             final infoCards = [
-              _buildInfoCard(
-                '🎓',
-                'Education',
-                'Computer Science & IS',
-                isDark,
-                isMobile,
-                cardWidth,
-              ),
-              _buildInfoCard(
-                '💼',
-                'Experience',
-                experience, // من Firestore settings
-                isDark,
-                isMobile,
-                cardWidth,
-              ),
+              _buildInfoCard('🎓', 'Education', 'Computer Science & IS', isDark, isMobile),
+              _buildInfoCard('💼', 'Experience', experience, isDark, isMobile),
               _buildInfoCard(
                 '🚀',
                 'Projects',
-                projectsTotal > 0
-                    ? '$projectsTotal+ Completed'
-                    : projectsCount, // fallback لو Firestore فاضل
+                projectsTotal > 0 ? '$projectsTotal+ Completed' : projectsCount,
                 isDark,
                 isMobile,
-                cardWidth,
               ),
               _buildInfoCard(
                 '🧠',
                 'Skills',
-                skillsTotal > 0
-                    ? '$skillsTotal+ Skills'
-                    : '15+ Skills', // fallback
+                skillsTotal > 0 ? '$skillsTotal+ Skills' : '15+ Skills',
                 isDark,
                 isMobile,
-                cardWidth,
               ),
             ];
 
             if (isMobile) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: infoCards
-                      .map(
-                        (card) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: card,
-                        ),
-                      )
-                      .toList(),
+              // FIX: SingleChildScrollView بـ padding مناسب
+              return SizedBox(
+                height: 120,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  itemCount: infoCards.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  itemBuilder: (_, i) => infoCards[i],
                 ),
               );
             } else {
@@ -362,8 +286,7 @@ class _DynamicInfoCards extends StatelessWidget {
                     .expand(
                       (e) => [
                         Expanded(child: e.value),
-                        if (e.key < infoCards.length - 1)
-                          const SizedBox(width: 16),
+                        if (e.key < infoCards.length - 1) const SizedBox(width: 16),
                       ],
                     )
                     .toList(),
@@ -380,49 +303,45 @@ class _DynamicInfoCards extends StatelessWidget {
     String title,
     String value,
     bool isDark,
-    bool isMobile, [
-    double? width,
-  ]) {
+    bool isMobile,
+  ) {
     return Container(
-      width: width,
-      padding: const EdgeInsets.all(20),
+      width: isMobile ? 110 : null,
+      padding: EdgeInsets.all(isMobile ? 14 : 20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(
-              0.2,
-            ),
-            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(
-              0.1,
-            ),
+            (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(0.2),
+            (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(0.1),
           ],
         ),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 38)),
-          const SizedBox(height: 8),
+          Text(emoji, style: TextStyle(fontSize: isMobile ? 28 : 38)),
+          SizedBox(height: isMobile ? 4 : 8),
           Text(
             title,
-            textScaleFactor: isMobile ? 0.90 : 1.0,
+            textScaler: TextScaler.linear(isMobile ? 0.90 : 1.0),
             style: TextStyle(
-              fontSize: isMobile ? 12 : 14,
-              color: isDark
-                  ? AppTheme.darkTextSecondary
-                  : AppTheme.lightTextSecondary,
+              fontSize: isMobile ? 11 : 14,
+              color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
             ),
           ),
-          const SizedBox(height: 5),
+          SizedBox(height: isMobile ? 3 : 5),
           Text(
             value,
-            textScaleFactor: isMobile ? 0.90 : 1.0,
+            textScaler: TextScaler.linear(isMobile ? 0.90 : 1.0),
             style: TextStyle(
-              fontSize: isMobile ? 13 : 16,
+              fontSize: isMobile ? 11 : 16,
               color: isDark ? AppTheme.darkText : AppTheme.lightText,
               fontWeight: FontWeight.w800,
             ),
             textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
           ),
         ],
       ),

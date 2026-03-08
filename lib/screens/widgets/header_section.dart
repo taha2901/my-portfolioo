@@ -264,7 +264,7 @@ class HeaderSection extends StatelessWidget {
                 speed: const Duration(milliseconds: 80),
               ),
               TyperAnimatedText(
-                '🚀 Cross-Platform Expert',
+                '🚀 Cross-Platform',
                 textStyle: TextStyle(
                   color: isDark ? AppTheme.darkAccent : Colors.white,
                   fontSize: isMobile ? 18 : (isTablet ? 24 : 32),
