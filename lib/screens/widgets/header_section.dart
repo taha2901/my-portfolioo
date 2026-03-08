@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:taha_portfolio/screens/widgets/contact_section.dart';
-import 'package:taha_portfolio/screens/widgets/projects_section.dart';
+import 'package:taha_portfolio/core/services/portfolio_service.dart';
 import 'dart:ui';
 import '../../core/utils/responsive.dart';
 import '../../core/constants/app_constants.dart';
@@ -24,21 +23,16 @@ class HeaderSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: Responsive.isMobile(context)
-          ? screenHeight *
-                0.7 // 70% للموبايل
+          ? screenHeight * 0.7
           : Responsive.isTablet(context)
-          ? screenHeight *
-                0.75 // 75% للتابليت
-          : screenHeight * 0.85, // 85% للديسكتوب
+              ? screenHeight * 0.75
+              : screenHeight * 0.85,
       decoration: BoxDecoration(
         gradient: isDark ? AppTheme.darkGradient : AppTheme.lightGradient,
       ),
       child: Stack(
         children: [
-          // Animated Background Circles
           ..._buildAnimatedBackground(isDark),
-
-          // Content
           Responsive(
             mobile: _buildMobileHeader(context, isDark),
             tablet: _buildTabletHeader(context, isDark),
@@ -52,13 +46,11 @@ class HeaderSection extends StatelessWidget {
   List<Widget> _buildAnimatedBackground(bool isDark) {
     return [
       Positioned(
-        top: -100,
-        right: -100,
+        top: -100, right: -100,
         child: _buildGlowingCircle(300, isDark),
       ),
       Positioned(
-        bottom: -150,
-        left: -150,
+        bottom: -150, left: -150,
         child: _buildGlowingCircle(400, isDark),
       ),
       Positioned(top: 150, left: 80, child: _buildGlowingCircle(120, isDark)),
@@ -94,7 +86,7 @@ class HeaderSection extends StatelessWidget {
             const SizedBox(height: 25),
             _buildTextContent(context, TextAlign.center, isDark),
             const SizedBox(height: 30),
-            _buildQuickStatsMobile(isDark),
+            _DynamicQuickStats(isDark: isDark, size: _StatSize.mobile),
             const SizedBox(height: 25),
             _buildSkillsListMobile(isDark),
             const SizedBox(height: 20),
@@ -117,7 +109,7 @@ class HeaderSection extends StatelessWidget {
               const SizedBox(height: 30),
               _buildTextContent(context, TextAlign.center, isDark),
               const SizedBox(height: 35),
-              _buildQuickStatsTablet(isDark),
+              _DynamicQuickStats(isDark: isDark, size: _StatSize.tablet),
               const SizedBox(height: 30),
               _buildSkillsListTablet(isDark),
               const SizedBox(height: 20),
@@ -143,7 +135,7 @@ class HeaderSection extends StatelessWidget {
                 children: [
                   _buildTextContent(context, TextAlign.left, isDark),
                   const SizedBox(height: 40),
-                  _buildQuickStats(isDark),
+                  _DynamicQuickStats(isDark: isDark, size: _StatSize.desktop),
                 ],
               ),
             ),
@@ -204,7 +196,6 @@ class HeaderSection extends StatelessWidget {
     TextAlign alignment,
     bool isDark,
   ) {
-    final isDesktop = Responsive.isDesktop(context);
     final isMobile = Responsive.isMobile(context);
     final isTablet = Responsive.isTablet(context);
 
@@ -307,21 +298,12 @@ class HeaderSection extends StatelessWidget {
               : WrapAlignment.center,
           children: [
             _buildGlassButton(
-              'Get In Touch',
-              Icons.email_outlined,
-              true,
-              isDark,
-              isMobile,
-               onTap: onGetInTouch, // استخدم الـ callback اللي انت مررته
+              'Get In Touch', Icons.email_outlined, true, isDark, isMobile,
+              onTap: onGetInTouch,
             ),
             _buildGlassButton(
-              'View Projects',
-              Icons.work_outline,
-              false,
-              isDark,
-              isMobile,
-                onTap: onViewProjects, // استخدم الـ callback اللي انت مررته
-
+              'View Projects', Icons.work_outline, false, isDark, isMobile,
+              onTap: onViewProjects,
             ),
           ],
         ),
@@ -329,212 +311,12 @@ class HeaderSection extends StatelessWidget {
     );
   }
 
-  // Quick Stats for Desktop
-  Widget _buildQuickStats(bool isDark) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.white.withOpacity(0.15),
-                Colors.white.withOpacity(0.1),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1.5,
-            ),
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildStatItem('1+', 'Years Experience', isDark),
-                const SizedBox(width: 30),
-                Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                const SizedBox(width: 30),
-                _buildStatItem('14+', 'Projects Done', isDark),
-                const SizedBox(width: 30),
-                Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                const SizedBox(width: 30),
-                _buildStatItem('15+', 'Skills', isDark),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget _buildSkillsList(bool isDark) => _buildSkillsWrap(isDark, 16, 10, 14);
+  Widget _buildSkillsListMobile(bool isDark) => _buildSkillsWrap(isDark, 12, 8, 12);
+  Widget _buildSkillsListTablet(bool isDark) => _buildSkillsWrap(isDark, 14, 9, 13);
 
-  // Quick Stats for Mobile
-  Widget _buildQuickStatsMobile(bool isDark) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.white.withOpacity(0.15),
-                Colors.white.withOpacity(0.1),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1.5,
-            ),
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildStatItemMobile('1+', 'Years', isDark),
-                Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                _buildStatItemMobile('14+', 'Projects', isDark),
-                Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                _buildStatItemMobile('15+', 'Skills', isDark),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Quick Stats for Tablet
-  Widget _buildQuickStatsTablet(bool isDark) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(18),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.white.withOpacity(0.15),
-                Colors.white.withOpacity(0.1),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1.5,
-            ),
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildStatItemTablet('3+', 'Years Experience', isDark),
-                Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                _buildStatItemTablet('14+', 'Projects Done', isDark),
-                Container(width: 1, color: Colors.white.withOpacity(0.3)),
-                _buildStatItemTablet('15+', 'Skills', isDark),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String number, String label, bool isDark) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          number,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.w900,
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatItemMobile(String number, String label, bool isDark) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          number,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w900,
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatItemTablet(String number, String label, bool isDark) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          number,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w900,
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
-            fontSize: 11,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSkillsList(bool isDark) {
-    final topSkills = [
-      'Flutter',
-      'Dart',
-      'Firebase',
-      'Supabase',
-      'SQLite',
-      'REST APIs',
-    ];
-
+  Widget _buildSkillsWrap(bool isDark, double hPad, double vPad, double fontSize) {
+    const topSkills = ['Flutter', 'Dart', 'Firebase', 'Supabase', 'SQLite', 'REST APIs'];
     return Wrap(
       spacing: 10,
       runSpacing: 10,
@@ -545,110 +327,17 @@ class HeaderSection extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
-                  width: 1.5,
-                ),
+                border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.5),
               ),
               child: Text(
                 skill,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildSkillsListMobile(bool isDark) {
-    final topSkills = [
-      'Flutter',
-      'Dart',
-      'Firebase',
-      'Supabase',
-      'SQLite',
-      'REST APIs',
-    ];
-
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      alignment: WrapAlignment.center,
-      children: topSkills.map((skill) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
-                  width: 1.5,
-                ),
-              ),
-              child: Text(
-                skill,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildSkillsListTablet(bool isDark) {
-    final topSkills = [
-      'Flutter',
-      'Dart',
-      'Firebase',
-      'Supabase',
-      'SQLite',
-      'REST APIs',
-    ];
-
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      alignment: WrapAlignment.center,
-      children: topSkills.map((skill) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
-                  width: 1.5,
-                ),
-              ),
-              child: Text(
-                skill,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.5,
                 ),
@@ -670,10 +359,7 @@ class HeaderSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1.5,
-            ),
+            border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
           ),
           child: child,
         ),
@@ -682,11 +368,7 @@ class HeaderSection extends StatelessWidget {
   }
 
   Widget _buildGlassButton(
-    String text,
-    IconData icon,
-    bool isPrimary,
-    bool isDark,
-    bool isMobile, {
+    String text, IconData icon, bool isPrimary, bool isDark, bool isMobile, {
     VoidCallback? onTap,
   }) {
     return ClipRRect(
@@ -702,19 +384,14 @@ class HeaderSection extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               gradient: isPrimary
-                  ? LinearGradient(
-                      colors: [
-                        Colors.white.withOpacity(0.3),
-                        Colors.white.withOpacity(0.2),
-                      ],
-                    )
+                  ? LinearGradient(colors: [
+                      Colors.white.withOpacity(0.3),
+                      Colors.white.withOpacity(0.2),
+                    ])
                   : null,
               color: isPrimary ? null : Colors.white.withOpacity(0.1),
               borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.3),
-                width: 2,
-              ),
+              border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -735,6 +412,135 @@ class HeaderSection extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// Dynamic Quick Stats — بيجيب الأرقام من Firestore
+// ═══════════════════════════════════════════════════════════
+enum _StatSize { mobile, tablet, desktop }
+
+class _DynamicQuickStats extends StatelessWidget {
+  final bool isDark;
+  final _StatSize size;
+
+  const _DynamicQuickStats({required this.isDark, required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    final service = PortfolioService();
+
+    return StreamBuilder<Map<String, dynamic>>(
+      stream: service.getSettings(),
+      builder: (context, settingsSnap) {
+        final settings = settingsSnap.data ?? {};
+        final experience = settings['experience']?.toString() ?? '1+';
+
+        return StreamBuilder<List<Map<String, dynamic>>>(
+          stream: service.getProjects(),
+          builder: (context, projectsSnap) {
+            final projectsCount = projectsSnap.data?.length ?? 0;
+            final projectsLabel = projectsCount > 0 ? '$projectsCount+' : '14+';
+
+            return StreamBuilder<List<Map<String, dynamic>>>(
+              stream: service.getSkills(),
+              builder: (context, skillsSnap) {
+                final skillsCount = skillsSnap.data?.length ?? 0;
+                final skillsLabel = skillsCount > 0 ? '$skillsCount+' : '15+';
+
+                return _buildStatsContainer(experience, projectsLabel, skillsLabel);
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildStatsContainer(String exp, String projects, String skills) {
+    final borderRadius = size == _StatSize.mobile ? 15.0 : size == _StatSize.tablet ? 18.0 : 20.0;
+    final hPad = size == _StatSize.mobile ? 15.0 : size == _StatSize.tablet ? 20.0 : 25.0;
+    final vPad = size == _StatSize.mobile ? 15.0 : size == _StatSize.tablet ? 18.0 : 20.0;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white.withOpacity(0.15),
+                Colors.white.withOpacity(0.1),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(borderRadius),
+            border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+          ),
+          child: IntrinsicHeight(
+            child: Row(
+              mainAxisSize: size == _StatSize.desktop ? MainAxisSize.min : MainAxisSize.max,
+              mainAxisAlignment: size == _StatSize.desktop
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildStatItem(exp, _expLabel),
+                _buildDivider(),
+                _buildStatItem(projects, _projectsLabel),
+                _buildDivider(),
+                _buildStatItem(skills, _skillsLabel),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String get _expLabel => size == _StatSize.desktop ? 'Years Experience' : size == _StatSize.tablet ? 'Years Experience' : 'Years';
+  String get _projectsLabel => size == _StatSize.desktop ? 'Projects Done' : size == _StatSize.tablet ? 'Projects Done' : 'Projects';
+  String get _skillsLabel => 'Skills';
+
+  Widget _buildDivider() {
+    final spacing = size == _StatSize.desktop ? 30.0 : 0.0;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(width: spacing),
+        Container(width: 1, color: Colors.white.withOpacity(0.3)),
+        SizedBox(width: spacing),
+      ],
+    );
+  }
+
+  Widget _buildStatItem(String number, String label) {
+    final numSize = size == _StatSize.mobile ? 18.0 : size == _StatSize.tablet ? 20.0 : 24.0;
+    final labelSize = size == _StatSize.mobile ? 10.0 : size == _StatSize.tablet ? 11.0 : 12.0;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          number,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: numSize,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.8),
+            fontSize: labelSize,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

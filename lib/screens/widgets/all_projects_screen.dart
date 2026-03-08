@@ -1,16 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:taha_portfolio/core/services/portfolio_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/responsive.dart';
 import '../../models/project_model.dart';
 
 class AllProjectsScreen extends StatelessWidget {
-  const AllProjectsScreen({super.key});
+  final String? category;
+  const AllProjectsScreen({super.key, this.category});
 
   @override
   Widget build(BuildContext context) {
-    final projects = Project.getProjects();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -27,7 +28,7 @@ class AllProjectsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'جميع المشاريع',
+          category != null ? 'All $category Projects' : 'All Projects',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
@@ -36,72 +37,77 @@ class AllProjectsScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: Responsive.isMobile(context)
-              ? 20
-              : Responsive.isTablet(context)
-                  ? 40
-                  : 100,
-          vertical: 30,
-        ),
-        child: Column(
-          children: [
-            // شوية Info في الأعلى
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: PortfolioService().getProjects(category: category),
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final rawProjects = snap.data ?? [];
+          final projects = rawProjects.map((p) => Project(
+            title: p['title'] ?? '',
+            description: p['description'] ?? '',
+            technologies: List<String>.from(p['technologies'] ?? []),
+            imagePath: p['imagePath'] ?? 'assets/img/placeholder.png',
+            category: p['category'] ?? 'Mobile',
+            githubLink: p['githubLink'],
+            apkLink: p['apkLink'],
+            videoLink: p['videoLink'],
+            badge: p['badge'],
+          )).toList();
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: Responsive.isMobile(context) ? 20 :
+                          Responsive.isTablet(context) ? 40 : 100,
+              vertical: 30,
+            ),
+            child: Column(
               children: [
-                Icon(
-                  Icons.work_outline_rounded,
-                  size: 22,
-                  color: isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.work_outline_rounded, size: 22,
+                        color: isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary),
+                    const SizedBox(width: 8),
+                    Text('${projects.length} Projects',
+                        style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w700,
+                          color: isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary,
+                        )),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  '${projects.length} مشروع تم تنفيذه',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color:
-                        isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary,
+                const SizedBox(height: 30),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1300),
+                  child: Wrap(
+                    spacing: 30,
+                    runSpacing: 40,
+                    alignment: WrapAlignment.center,
+                    children: projects.asMap().entries.map((entry) {
+                      return TweenAnimationBuilder(
+                        duration: Duration(milliseconds: 400 + entry.key * 80),
+                        tween: Tween<double>(begin: 0, end: 1),
+                        curve: Curves.easeOutCubic,
+                        builder: (context, double value, child) {
+                          return Transform.translate(
+                            offset: Offset(0, 30 * (1 - value)),
+                            child: Opacity(opacity: value,
+                              child: SizedBox(
+                                width: Responsive.isMobile(context) ? double.infinity : 380,
+                                child: _buildProjectCard(entry.value, context, isDark),
+                              )),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
                 ),
+                const SizedBox(height: 40),
               ],
             ),
-            const SizedBox(height: 30),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1300),
-              child: Wrap(
-                spacing: 30,
-                runSpacing: 40,
-                alignment: WrapAlignment.center,
-                children: projects.asMap().entries.map((entry) {
-                  final project = entry.value;
-                  return TweenAnimationBuilder(
-                    duration:
-                        Duration(milliseconds: 400 + (entry.key * 80)),
-                    tween: Tween<double>(begin: 0, end: 1),
-                    curve: Curves.easeOutCubic,
-                    builder: (context, double value, child) {
-                      return Transform.translate(
-                        offset: Offset(0, 30 * (1 - value)),
-                        child: Opacity(
-                          opacity: value,
-                          child: _buildProjectCard(
-                            project,
-                            context,
-                            isDark,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 40),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -154,7 +160,6 @@ class AllProjectsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // صورة + Badge
                 Container(
                   height: 220,
                   width: double.infinity,
@@ -163,13 +168,9 @@ class AllProjectsScreen extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        (isDark
-                                ? AppTheme.darkPrimary
-                                : AppTheme.lightPrimary)
+                        (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
                             .withOpacity(0.3),
-                        (isDark
-                                ? AppTheme.darkAccent
-                                : AppTheme.lightAccent)
+                        (isDark ? AppTheme.darkAccent : AppTheme.lightAccent)
                             .withOpacity(0.2),
                       ],
                     ),
@@ -213,9 +214,7 @@ class AllProjectsScreen extends StatelessWidget {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: _getBadgeColor(
-                                    project.badge!,
-                                  ).withOpacity(0.5),
+                                  color: _getBadgeColor(project.badge!).withOpacity(0.5),
                                   blurRadius: 15,
                                   spreadRadius: 2,
                                 ),
@@ -224,11 +223,7 @@ class AllProjectsScreen extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
-                                  _getBadgeIcon(project.badge!),
-                                  size: 14,
-                                  color: Colors.white,
-                                ),
+                                Icon(_getBadgeIcon(project.badge!), size: 14, color: Colors.white),
                                 const SizedBox(width: 6),
                                 Text(
                                   project.badge!,
@@ -246,7 +241,6 @@ class AllProjectsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                // تفاصيل المشروع
                 Padding(
                   padding: const EdgeInsets.all(25),
                   child: Column(
@@ -257,9 +251,7 @@ class AllProjectsScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
-                          color: isDark
-                              ? AppTheme.darkText
-                              : AppTheme.lightText,
+                          color: isDark ? AppTheme.darkText : AppTheme.lightText,
                           letterSpacing: -0.5,
                         ),
                       ),
@@ -287,14 +279,8 @@ class AllProjectsScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  (isDark
-                                          ? AppTheme.darkPrimary
-                                          : AppTheme.lightPrimary)
-                                      .withOpacity(0.2),
-                                  (isDark
-                                          ? AppTheme.darkAccent
-                                          : AppTheme.lightAccent)
-                                      .withOpacity(0.1),
+                                  (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(0.2),
+                                  (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(0.1),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(20),
@@ -309,9 +295,7 @@ class AllProjectsScreen extends StatelessWidget {
                               tech,
                               style: TextStyle(
                                 fontSize: 13,
-                                color: isDark
-                                    ? AppTheme.darkPrimary
-                                    : AppTheme.lightPrimary,
+                                color: isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary,
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 0.3,
                               ),
@@ -325,42 +309,28 @@ class AllProjectsScreen extends StatelessWidget {
                           if (project.githubLink != null)
                             Expanded(
                               child: _buildActionButton(
-                                'GitHub',
-                                Icons.code_rounded,
-                                project.githubLink!,
-                                isDark,
-                                project.title,
-                                context,
+                                'GitHub', Icons.code_rounded,
+                                project.githubLink!, isDark, project.title, context,
                               ),
                             ),
-                          if (project.githubLink != null &&
-                              project.apkLink != null)
+                          if (project.githubLink != null && project.apkLink != null)
                             const SizedBox(width: 10),
                           if (project.apkLink != null)
                             Expanded(
                               child: _buildActionButton(
-                                'APK',
-                                Icons.android_rounded,
-                                project.apkLink!,
-                                isDark,
-                                project.title,
-                                context,
+                                'APK', Icons.android_rounded,
+                                project.apkLink!, isDark, project.title, context,
                               ),
                             ),
                         ],
                       ),
-                      if (project.videoLink != null &&
-                          project.videoLink!.trim().isNotEmpty) ...[
+                      if (project.videoLink != null && project.videoLink!.trim().isNotEmpty) ...[
                         const SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
                           child: _buildActionButton(
-                            'Watch Demo',
-                            Icons.play_circle_rounded,
-                            project.videoLink!,
-                            isDark,
-                            project.title,
-                            context,
+                            'Watch Demo', Icons.play_circle_rounded,
+                            project.videoLink!, isDark, project.title, context,
                           ),
                         ),
                       ],
@@ -378,57 +348,37 @@ class AllProjectsScreen extends StatelessWidget {
   LinearGradient _getBadgeGradient(String badge) {
     switch (badge.toLowerCase()) {
       case 'featured':
-        return const LinearGradient(
-          colors: [Color(0xFFFF6B6B), Color(0xFFEE5A6F)],
-        );
+        return const LinearGradient(colors: [Color(0xFFFF6B6B), Color(0xFFEE5A6F)]);
       case 'offline':
-        return const LinearGradient(
-          colors: [Color(0xFF4A90E2), Color(0xFF357ABD)],
-        );
+        return const LinearGradient(colors: [Color(0xFF4A90E2), Color(0xFF357ABD)]);
       case 'cloud':
-        return const LinearGradient(
-          colors: [Color(0xFF00C851), Color(0xFF007E33)],
-        );
+        return const LinearGradient(colors: [Color(0xFF00C851), Color(0xFF007E33)]);
       default:
-        return const LinearGradient(
-          colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
-        );
+        return const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]);
     }
   }
 
   Color _getBadgeColor(String badge) {
     switch (badge.toLowerCase()) {
-      case 'featured':
-        return const Color(0xFFFF6B6B);
-      case 'offline':
-        return const Color(0xFF4A90E2);
-      case 'cloud':
-        return const Color(0xFF00C851);
-      default:
-        return const Color(0xFF667EEA);
+      case 'featured': return const Color(0xFFFF6B6B);
+      case 'offline':  return const Color(0xFF4A90E2);
+      case 'cloud':    return const Color(0xFF00C851);
+      default:         return const Color(0xFF667EEA);
     }
   }
 
   IconData _getBadgeIcon(String badge) {
     switch (badge.toLowerCase()) {
-      case 'featured':
-        return Icons.star_rounded;
-      case 'offline':
-        return Icons.storage_rounded;
-      case 'cloud':
-        return Icons.cloud_rounded;
-      default:
-        return Icons.label_rounded;
+      case 'featured': return Icons.star_rounded;
+      case 'offline':  return Icons.storage_rounded;
+      case 'cloud':    return Icons.cloud_rounded;
+      default:         return Icons.label_rounded;
     }
   }
 
   Widget _buildActionButton(
-    String label,
-    IconData icon,
-    String url,
-    bool isDark,
-    String projectTitle,
-    BuildContext context,
+    String label, IconData icon, String url,
+    bool isDark, String projectTitle, BuildContext context,
   ) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
@@ -438,17 +388,14 @@ class AllProjectsScreen extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                    .withOpacity(0.9),
-                (isDark ? AppTheme.darkAccent : AppTheme.lightAccent)
-                    .withOpacity(0.8),
+                (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(0.9),
+                (isDark ? AppTheme.darkAccent : AppTheme.lightAccent).withOpacity(0.8),
               ],
             ),
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary)
-                    .withOpacity(0.4),
+                color: (isDark ? AppTheme.darkPrimary : AppTheme.lightPrimary).withOpacity(0.4),
                 blurRadius: 15,
                 offset: const Offset(0, 5),
               ),
@@ -485,13 +432,8 @@ class AllProjectsScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _launchURL(
-    String url,
-    String projectTitle,
-    BuildContext context,
-  ) async {
-    if (projectTitle == 'Management Stocks (Cloud)' &&
-        (url.isEmpty || url.trim().isEmpty)) {
+  Future<void> _launchURL(String url, String projectTitle, BuildContext context) async {
+    if (url.isEmpty || url.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('🎬 سيتم إضافة الفيديو قريبًا!'),
@@ -500,7 +442,6 @@ class AllProjectsScreen extends StatelessWidget {
       );
       return;
     }
-
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');

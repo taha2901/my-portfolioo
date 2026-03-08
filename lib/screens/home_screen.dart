@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:taha_portfolio/screens/widgets/skills_section.dart';
 import 'package:taha_portfolio/screens/widgets/footer.dart';
 import 'package:taha_portfolio/core/widgets/theme_toggle_button.dart';
 import 'widgets/header_section.dart';
 import 'widgets/about_section.dart';
-import 'widgets/skills_section.dart';
 import 'widgets/projects_section.dart';
 import 'widgets/cv_section.dart';
 import 'widgets/contact_section.dart';
@@ -83,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (MediaQuery.of(context).size.width > 800)
                   const FooterSection(),
                 const SizedBox(height: 100),
-                
               ],
             ),
           ),
@@ -93,6 +92,26 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ThemeToggleButton(
               isDark: widget.isDark,
               onToggle: widget.onThemeToggle,
+            ),
+          ),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/admin-login'),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                child: const Icon(
+                  Icons.admin_panel_settings_rounded,
+                  color: Colors.white70,
+                  size: 22,
+                ),
+              ),
             ),
           ),
           if (_showBackToTop)
