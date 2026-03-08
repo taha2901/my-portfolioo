@@ -35,6 +35,18 @@ class Project {
   static List<Project> getProjects() {
     return [
       Project(
+        title: 'E-Learning Platform',
+        description:
+            'Developed a full-featured e-learning mobile application inspired by Udemy. The platform allows users to register, browse courses, watch structured lessons, and track their learning progress. It includes authentication, course enrollment, video-based lessons, progress tracking, and certificate generation after course completion, providing a complete online learning experience.',
+        technologies: ['Flutter', 'Mobile', 'Supabase', 'API'],
+        imagePath: 'assets/img/e_learning.png',
+        apkLink:
+            'https://drive.google.com/file/d/1iAmiFS9Scwa_IJyPd8SpyygUfFytTbim/view?usp=drivesdk',
+        videoLink:
+            'https://drive.google.com/file/d/1rNMoGTE7pqAsTfGJJO5Q1brqA1RRD9PJ/view?usp=drivesdk',
+        category: 'Mobile',
+      ),
+      Project(
         title: 'Management Stocks',
         description:
             'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
@@ -70,7 +82,8 @@ class Project {
             'https://drive.google.com/file/d/1Xwmmg_NxH6jUkcmXSnmgV_jUTdIhvaGu/view?usp=drivesdk',
         videoLink:
             'https://drive.google.com/file/d/1mdsqmTu1RmwmW-hjePcpP9KSl_2MjqRn/view?usp=drivesdk',
-        imagePath: 'assets/img/market_lens_mocup.png', // استبدل بالصورة المناسبة
+        imagePath:
+            'assets/img/market_lens_mocup.png', // استبدل بالصورة المناسبة
         badge: 'Featured',
         category: 'Mobile',
       ),
