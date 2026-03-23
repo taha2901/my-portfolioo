@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'my-portfolio-42ccf.firebasestorage.app',
     measurementId: 'G-N5L846TP4Z',
   );
+
 }

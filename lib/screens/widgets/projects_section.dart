@@ -167,7 +167,7 @@ class _ProjectsSectionState extends State<ProjectsSection>
                       final raw = snap.data ?? [];
                       final projects = raw
                           .map(
-                            (p) => Project(
+                            (p) => ProjectModel(
                               title: p['title'] ?? '',
                               description: p['description'] ?? '',
                               technologies: List<String>.from(
@@ -619,7 +619,7 @@ class _EmptyState extends StatelessWidget {
 //  Mobile Card Stack — vertical scroll
 // ═══════════════════════════════════════════════════════════
 class _MobileCardStack extends StatelessWidget {
-  final List<Project> projects;
+  final List<ProjectModel> projects;
   final bool isDark;
   final Color accentColor;
   final BuildContext outerContext;
@@ -673,7 +673,7 @@ class _MobileCardStack extends StatelessWidget {
 //  Desktop Masonry Grid
 // ═══════════════════════════════════════════════════════════
 class _DesktopMasonryGrid extends StatelessWidget {
-  final List<Project> projects;
+  final List<ProjectModel> projects;
   final bool isDark, isTablet;
   final Color accentColor;
   final BuildContext outerContext;
@@ -730,7 +730,7 @@ class _DesktopMasonryGrid extends StatelessWidget {
 //  Project Card — premium design
 // ═══════════════════════════════════════════════════════════
 class _ProjectCard extends StatefulWidget {
-  final Project project;
+  final ProjectModel project;
   final bool isDark;
   final Color accentColor;
   final BuildContext outerContext;
@@ -1069,7 +1069,7 @@ class _ProjectCardState extends State<_ProjectCard>
 
 // ─── Card Image ──────────────────────────────────────────
 class _CardImage extends StatelessWidget {
-  final Project project;
+  final ProjectModel project;
   final Color accentColor;
   final bool hovered;
   const _CardImage({
@@ -1231,7 +1231,7 @@ class _BadgeChip extends StatelessWidget {
 
 // ─── Card Actions ─────────────────────────────────────────
 class _CardActions extends StatelessWidget {
-  final Project project;
+  final ProjectModel project;
   final Color accentColor;
   final bool isDark;
   final BuildContext outerContext;

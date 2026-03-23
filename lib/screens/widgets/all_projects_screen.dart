@@ -31,7 +31,7 @@ class AllProjectsScreen extends StatelessWidget {
           final raw = snap.data ?? [];
           final projects = raw
               .map(
-                (p) => Project(
+                (p) => ProjectModel(
                   title: p['title'] ?? '',
                   description: p['description'] ?? '',
                   technologies: List<String>.from(p['technologies'] ?? []),
@@ -141,7 +141,7 @@ class AllProjectsScreen extends StatelessWidget {
 //  Mobile — vertical list
 // ═══════════════════════════════════════════════════════════
 class _MobileList extends StatelessWidget {
-  final List<Project> projects;
+  final List<ProjectModel> projects;
   final bool isDark;
   final Color accentColor;
   const _MobileList({
@@ -182,7 +182,7 @@ class _MobileList extends StatelessWidget {
 //  Desktop — wrap grid
 // ═══════════════════════════════════════════════════════════
 class _DesktopGrid extends StatelessWidget {
-  final List<Project> projects;
+  final List<ProjectModel> projects;
   final bool isDark, isTablet;
   final Color accentColor;
   const _DesktopGrid({
@@ -234,7 +234,7 @@ class _DesktopGrid extends StatelessWidget {
 //  Project Card — identical to projects_section.dart
 // ═══════════════════════════════════════════════════════════
 class _ProjectCard extends StatefulWidget {
-  final Project project;
+  final ProjectModel project;
   final bool isDark;
   final Color accentColor;
   final int index;
@@ -559,7 +559,7 @@ class _ProjectCardState extends State<_ProjectCard>
 
 // ─── Card Image ──────────────────────────────────────────
 class _CardImage extends StatelessWidget {
-  final Project project;
+  final ProjectModel project;
   final Color accentColor;
   final bool hovered;
   const _CardImage({
@@ -725,7 +725,7 @@ class _BadgeChip extends StatelessWidget {
 
 // ─── Card Actions ─────────────────────────────────────────
 class _CardActions extends StatelessWidget {
-  final Project project;
+  final ProjectModel project;
   final Color accentColor;
   final bool isDark;
   final BuildContext outerContext;
