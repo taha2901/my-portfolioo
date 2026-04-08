@@ -50,6 +50,18 @@ List<ProjectModel> getProjects() => [
         category: 'Mobile',
       ),
       ProjectModel(
+        title: 'GymEase — Gym Booking App',
+        description:
+            'C Demo Video APK ross-platform gym booking app with credit wallet, achievement tracking, and nearby gym discovery.Features custom animated UI and multi-language support (AR/EN).',
+        technologies: ['Flutter', 'Mobile', 'MVVM', 'EasyLocalization'],
+        imagePath: 'assets/img/gymbook_mockup.png',
+        apkLink:
+            'https://drive.google.com/file/d/1lvx4TJPKlYbSjH3GqnyxUYxpnRy_tfzG/view',
+        videoLink:
+            'https://drive.google.com/file/d/1NeGAk7J0AVyeSZL3lu6Yx_Zjc5CboUCY/view',
+        category: 'Mobile',
+      ),
+      ProjectModel(
         title: 'Management Stocks',
         description:
             'Designed and delivered a complete shopping flow with authentication, cart management, and order tracking, improving overall user experience and app stability.',
